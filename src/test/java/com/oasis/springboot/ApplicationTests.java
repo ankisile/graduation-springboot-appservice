@@ -1,10 +1,10 @@
-package com.oasis.graduationspringbootappservice;
+package com.oasis.springboot;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class GraduationSpringbootAppserviceApplicationTests {
+class ApplicationTests {
 
     @Test
     void contextLoads() {

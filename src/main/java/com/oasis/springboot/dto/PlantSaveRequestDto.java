@@ -1,59 +1,29 @@
-package com.oasis.springboot.domain.plant;
+package com.oasis.springboot.dto;
 
-import com.oasis.springboot.domain.BaseTimeEntity;
+import com.oasis.springboot.domain.plant.Plant;
 import com.oasis.springboot.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-@Entity
-public class Plant extends BaseTimeEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column
+public class PlantSaveRequestDto {
     private String name;
-
-    @Column
     private String picture;
-
-    @Column
     private LocalDateTime adoptingDate;
-
-    @Column
     private Integer waterInterval;
-
-    @Column
     private Integer nutritionInterval;
-
-    @Column
     private Integer repottingInterval;
-
-    @Column
     private Double sunshine;
-
-    @Column
     private Double waterSupply;
-
-    @Column
     private Integer highTemperature;
-
-    @Column
     private Integer lowTemperature;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
     @Builder
-    public Plant(String name, String picture, LocalDateTime adoptingDate, Integer waterInterval, Integer nutritionInterval, Integer repottingInterval, Double sunshine, Double waterSupply, Integer highTemperature, Integer lowTemperature, User user) {
+    public PlantSaveRequestDto(String name, String picture, LocalDateTime adoptingDate, Integer waterInterval, Integer nutritionInterval, Integer repottingInterval, Double sunshine, Double waterSupply, Integer highTemperature, Integer lowTemperature) {
         this.name = name;
         this.picture = picture;
         this.adoptingDate = adoptingDate;
@@ -64,6 +34,21 @@ public class Plant extends BaseTimeEntity {
         this.waterSupply = waterSupply;
         this.highTemperature = highTemperature;
         this.lowTemperature = lowTemperature;
-        this.user = user;
+    }
+
+    public Plant toEntity(User user){
+        return Plant.builder()
+                .name(name)
+                .picture("ddd.jpg")
+                .adoptingDate(LocalDateTime.now())
+                .waterInterval(5)
+                .nutritionInterval(90)
+                .repottingInterval(90)
+                .sunshine(3.5)
+                .waterSupply(4.5)
+                .highTemperature(25)
+                .lowTemperature(30)
+                .user(user)
+                .build();
     }
 }

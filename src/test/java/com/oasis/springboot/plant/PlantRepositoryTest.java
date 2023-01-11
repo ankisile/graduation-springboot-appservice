@@ -17,6 +17,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -28,15 +30,8 @@ public class PlantRepositoryTest {
     @Autowired
     UserRepository userRepository;
 
-    @AfterEach
-    public void cleanUp() {
-        plantRepository.deleteAll();
-        userRepository.deleteAll();
-    }
-
-    @Test
-    public void testPlantFind() {
-        //given
+    @BeforeEach
+    public void init() {
         User user = User.builder()
                 .email("aaa@gmail.com")
                 .name("aaa")
@@ -48,6 +43,7 @@ public class PlantRepositoryTest {
         String name = "plantName";
         Plant plant = Plant.builder()
                 .name(name)
+                .picture("ddd.jpg")
                 .adoptingDate(LocalDateTime.now())
                 .waterInterval(5)
                 .nutritionInterval(90)
@@ -59,9 +55,22 @@ public class PlantRepositoryTest {
                 .user(user)
                 .build();
         plantRepository.save(plant);
+    }
+
+    @AfterEach
+    public void cleanUp() {
+        plantRepository.deleteAll();
+        userRepository.deleteAll();
+    }
+
+    @Test
+    public void testPlantFindByUserId() {
+        //given
+        String name = "plantName";
+        Long userId = userRepository.findAll().get(0).getId();
 
         //when
-        List<Plant> plantList = plantRepository.findAll();
+        List<Plant> plantList = plantRepository.findByUser_Id(userId);
 
         //then
         Plant plant1 = plantList.get(0);
@@ -69,5 +78,21 @@ public class PlantRepositoryTest {
         assertThat(plant1.getCreatedDate()).isBefore(LocalDateTime.now());
 
     }
+
+    @Test
+    public void testPlantDelete(){
+        //given
+        Long userId = userRepository.findAll().get(0).getId();
+        List<Plant> plantList = plantRepository.findByUser_Id(userId);
+        Plant deletePlant = plantList.get(0);
+
+        //when
+        plantRepository.delete(deletePlant);
+        plantList =  plantRepository.findByUser_Id(userId);
+
+        //then
+        assertThat(plantList.size()).isEqualTo(0);
+    }
+
 
 }

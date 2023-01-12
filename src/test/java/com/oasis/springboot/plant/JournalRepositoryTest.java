@@ -1,5 +1,7 @@
 package com.oasis.springboot.plant;
 
+import com.oasis.springboot.domain.journal.Journal;
+import com.oasis.springboot.domain.journal.JournalRepository;
 import com.oasis.springboot.domain.plant.Plant;
 import com.oasis.springboot.domain.plant.PlantRepository;
 import com.oasis.springboot.domain.user.Role;
@@ -18,10 +20,11 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class PlantRepositoryTest {
+public class JournalRepositoryTest {
+    @Autowired
+    JournalRepository journalRepository;
 
     @Autowired
     PlantRepository plantRepository;
@@ -39,9 +42,8 @@ public class PlantRepositoryTest {
                 .build();
         userRepository.save(user);
 
-        String name = "plantName";
         Plant plant = Plant.builder()
-                .name(name)
+                .name("plantName")
                 .picture("ddd.jpg")
                 .adoptingDate(LocalDateTime.now())
                 .waterInterval(5)
@@ -54,44 +56,36 @@ public class PlantRepositoryTest {
                 .user(user)
                 .build();
         plantRepository.save(plant);
+
+        Journal journal = Journal.builder()
+                .content("content")
+                .picture("picture")
+                .plant(plant)
+                .build();
+        journalRepository.save(journal);
+
     }
 
     @AfterEach
     public void cleanUp() {
+        journalRepository.deleteAll();
         plantRepository.deleteAll();
         userRepository.deleteAll();
     }
 
     @Test
-    public void testPlantFindByUserId() {
+    public void testFindJournalsByPlantId() {
         //given
-        String name = "plantName";
-        Long userId = userRepository.findAll().get(0).getId();
+        String content = "content";
+        Long plantId = plantRepository.findAll().get(0).getId();
 
         //when
-        List<Plant> plantList = plantRepository.findByUser_Id(userId);
+        List<Journal> journalList = journalRepository.findByPlant_IdOrderByIdDesc(plantId);
 
         //then
-        Plant plant1 = plantList.get(0);
-        assertThat(plant1.getName()).isEqualTo(name);
-        assertThat(plant1.getCreatedDate()).isBefore(LocalDateTime.now());
+        Journal journal = journalList.get(0);
+        assertThat(journal.getContent()).isEqualTo(content);
 
     }
-
-    @Test
-    public void testPlantDelete(){
-        //given
-        Long userId = userRepository.findAll().get(0).getId();
-        List<Plant> plantList = plantRepository.findByUser_Id(userId);
-        Plant deletePlant = plantList.get(0);
-
-        //when
-        plantRepository.delete(deletePlant);
-        plantList =  plantRepository.findByUser_Id(userId);
-
-        //then
-        assertThat(plantList.size()).isEqualTo(0);
-    }
-
 
 }

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -48,6 +49,9 @@ public class Plant extends BaseTimeEntity {
     @Column
     private Integer lowTemperature;
 
+    @Column
+    private LocalDate recentRecordDate;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -64,6 +68,12 @@ public class Plant extends BaseTimeEntity {
         this.waterSupply = waterSupply;
         this.highTemperature = highTemperature;
         this.lowTemperature = lowTemperature;
+        this.recentRecordDate = LocalDate.now();
         this.user = user;
     }
+
+    public void updateRecentRecordDate(LocalDate date){
+        this.recentRecordDate = date;
+    }
+
 }

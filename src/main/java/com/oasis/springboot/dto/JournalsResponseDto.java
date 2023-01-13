@@ -16,6 +16,6 @@ public class JournalsResponseDto {
     public JournalsResponseDto(Journal entity) {
         this.content = entity.getContent();
         this.picture = entity.getPicture();
-        this.date = entity.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyyMMdd"));;
+        this.date = entity.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
     }
 }

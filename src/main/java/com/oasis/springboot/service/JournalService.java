@@ -4,14 +4,13 @@ import com.oasis.springboot.domain.journal.Journal;
 import com.oasis.springboot.domain.journal.JournalRepository;
 import com.oasis.springboot.domain.plant.Plant;
 import com.oasis.springboot.domain.plant.PlantRepository;
-import com.oasis.springboot.dto.JournalSaveRequestDto;
-import com.oasis.springboot.dto.JournalsResponseDto;
+import com.oasis.springboot.dto.journal.JournalSaveRequestDto;
+import com.oasis.springboot.dto.journal.JournalsResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

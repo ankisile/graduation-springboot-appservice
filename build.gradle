@@ -22,6 +22,7 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
     compileOnly 'org.projectlombok:lombok'
@@ -31,6 +32,20 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.7.0'
+
+    //springDoc openApi UI
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
+
+    //ouath2
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+    //jwt
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+
+    implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+
 }
 
 tasks.named('test') {

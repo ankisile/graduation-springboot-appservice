@@ -1,7 +1,7 @@
 package com.oasis.springboot.controller;
 
-import com.oasis.springboot.dto.JournalSaveRequestDto;
-import com.oasis.springboot.dto.JournalsResponseDto;
+import com.oasis.springboot.dto.journal.JournalSaveRequestDto;
+import com.oasis.springboot.dto.journal.JournalsResponseDto;
 import com.oasis.springboot.service.JournalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

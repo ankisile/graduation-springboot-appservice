@@ -1,4 +1,4 @@
-package com.oasis.springboot.dto;
+package com.oasis.springboot.dto.journal;
 
 import com.oasis.springboot.domain.journal.Journal;
 import lombok.Builder;

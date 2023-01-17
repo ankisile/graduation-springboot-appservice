@@ -1,4 +1,4 @@
-package com.oasis.springboot.dto;
+package com.oasis.springboot.dto.plant;
 
 import com.oasis.springboot.domain.plant.Plant;
 import lombok.Builder;

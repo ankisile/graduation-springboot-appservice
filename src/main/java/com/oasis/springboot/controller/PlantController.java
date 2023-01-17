@@ -1,7 +1,7 @@
 package com.oasis.springboot.controller;
 
-import com.oasis.springboot.dto.PlantSaveRequestDto;
-import com.oasis.springboot.dto.PlantsResponseDto;
+import com.oasis.springboot.dto.plant.PlantSaveRequestDto;
+import com.oasis.springboot.dto.plant.PlantsResponseDto;
 import com.oasis.springboot.service.PlantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

@@ -6,14 +6,13 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
@@ -25,17 +24,24 @@ import java.time.format.DateTimeFormatter;
 public class HomeController {
 
     @GetMapping("")
-    public JSONObject getWeather() throws IOException, ParseException {
-        //초단기예보
+    public JSONArray getWeather(@RequestParam("x") String x, @RequestParam("y") String y) throws IOException, ParseException{
         String apiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst";
 
         String serviceKey = "UdJoe0RU%2BfA4noQhiQupw5F43s9H%2BGaTyKVFX9guM4wsuoWR9SWXPtQ4pHzWpcOpP%2FBo6enHnmibSfN55xy7tQ%3D%3D";
 
         //변경 geolocation -> 좌표
-        String nx = "60";
-        String ny = "127";
+        String nx = x;
+        String ny = y;
         String baseDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        String baseTime = String.valueOf(LocalTime.now().getHour())+"00";
+        String baseTime = String.format("%02d", LocalTime.now().getHour())+"30";
+        if(LocalTime.now().getMinute()<30) {
+            baseTime =  String.format("%02d", LocalTime.now().getHour() - 1) + "30";
+            if(LocalTime.now().getHour() == 0)
+                baseTime = "2330";
+        }
+
+//        System.out.println(baseTime);
+
         String dataType = "json";
         String numOfRows = "250";
 
@@ -79,26 +85,24 @@ public class HomeController {
         JSONObject parse_items = (JSONObject) parse_body.get("items");
         JSONArray parse_item = (JSONArray) parse_items.get("item");
 
-        JSONObject weather = new JSONObject();
-        JSONObject result = new JSONObject();
+
+        JSONArray result = new JSONArray();
         Object fcstTime;
         Object category;
         Object value;
 
-        int dataSize = parse_item.size()/10;
+        for(int k=0;k<10;k++) {
+            JSONObject weather = new JSONObject();
+            weather = (JSONObject) parse_item.get(k*6);
+            JSONObject object = new JSONObject();
+//            fcstTime = weather.get("fcstTime");
+            category = weather.get("category");
+            value = weather.get("fcstValue");
 
-        for(int i=0;i<dataSize;i++) {
-            String time = (String)((JSONObject) parse_item.get(i*dataSize)).get("fcsTime");
-            String predTime = String.valueOf((Integer.parseInt(baseTime)+1)%24)+"00";
-            if(!time.equals(predTime))
-                continue;
-            for(int k=0;k<10;k++) {
-                weather = (JSONObject) parse_item.get((i*dataSize)+k);
-                category = weather.get("category");
-                value = weather.get("fcstValue");
-                result.put("Category", category);
-                result.put("Value", value);
-            }
+            object.put("Category", category);
+            object.put("Value", value);
+//            weather.put("fcst", fcstTime);
+            result.add(object);
         }
 
         return result;

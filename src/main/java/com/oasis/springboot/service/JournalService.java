@@ -21,7 +21,7 @@ public class JournalService {
     private final PlantRepository plantRepository;
 
     @Transactional
-    public void saveJournal(Long plantId, JournalSaveRequestDto journalSaveRequestDto){
+    public String saveJournal(Long plantId, JournalSaveRequestDto journalSaveRequestDto){
         Plant plant = plantRepository.findById(plantId)
                 .orElseThrow(()->new IllegalArgumentException("해당 식물이 없습니다. id = "+ plantId));
 
@@ -29,14 +29,16 @@ public class JournalService {
         Journal journal = journalRepository.findById(journalId)
                 .orElseThrow(()->new IllegalArgumentException("해당 일지가 없습니다. id = "+ journalId));
         plant.updateRecentRecordDate(journal.getCreatedDate().toLocalDate());
+        return "식물 일지 등록 성공";
+
     }
 
+    //쿼리 어케 짤지 고민좀 해봐야 될듯흑흑
     public List<JournalsResponseDto> getJournals(Long plantId){
         return journalRepository.findByPlant_IdOrderByIdDesc(plantId)
                 .stream()
                 .map(JournalsResponseDto::new)
                 .collect(Collectors.toList());
-
     }
 
 }

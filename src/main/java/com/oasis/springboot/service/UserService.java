@@ -51,4 +51,20 @@ public class UserService {
                 .map(user -> new UserMainResponseDto(user))
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 user 입니다. email=" + email));
     }
+
+    public User findByEmail(){
+        String email = SecurityUtil.getCurrentEmail().orElseThrow(() ->
+                new RuntimeException("Security Context에 인증 정보가 없습니다."));
+        return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("존재하지 않는 user 입니다. email=" + email));
+
+    }
+
+    public Long findUserId(){
+        String email = SecurityUtil.getCurrentEmail().orElseThrow(() ->
+                new RuntimeException("Security Context에 인증 정보가 없습니다."));
+        System.out.println(email);
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("존재하지 않는 user 입니다. email=" + email));
+        return user.getId();
+    }
+
 }

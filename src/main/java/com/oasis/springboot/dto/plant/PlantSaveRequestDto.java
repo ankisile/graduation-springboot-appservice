@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 public class PlantSaveRequestDto {
     private String name;
     private String picture;
-    private LocalDateTime adoptingDate;
+    private LocalDate adoptingDate;
     private Integer waterInterval;
     private Integer nutritionInterval;
     private Integer repottingInterval;
@@ -23,7 +24,7 @@ public class PlantSaveRequestDto {
     private Integer lowTemperature;
 
     @Builder
-    public PlantSaveRequestDto(String name, String picture, LocalDateTime adoptingDate, Integer waterInterval, Integer nutritionInterval, Integer repottingInterval, Double sunshine, Double waterSupply, Integer highTemperature, Integer lowTemperature) {
+    public PlantSaveRequestDto(String name, String picture, LocalDate adoptingDate, Integer waterInterval, Integer nutritionInterval, Integer repottingInterval, Double sunshine, Double waterSupply, Integer highTemperature, Integer lowTemperature) {
         this.name = name;
         this.picture = picture;
         this.adoptingDate = adoptingDate;
@@ -40,7 +41,7 @@ public class PlantSaveRequestDto {
         return Plant.builder()
                 .name(name)
                 .picture("ddd.jpg")
-                .adoptingDate(LocalDateTime.now())
+                .adoptingDate(LocalDate.now())
                 .waterInterval(5)
                 .nutritionInterval(90)
                 .repottingInterval(90)

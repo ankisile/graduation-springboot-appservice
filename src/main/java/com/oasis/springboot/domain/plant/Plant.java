@@ -26,7 +26,7 @@ public class Plant extends BaseTimeEntity {
     private String picture;
 
     @Column
-    private LocalDateTime adoptingDate;
+    private LocalDate adoptingDate;
 
     @Column
     private Integer waterInterval;
@@ -57,7 +57,7 @@ public class Plant extends BaseTimeEntity {
     private User user;
 
     @Builder
-    public Plant(String name, String picture, LocalDateTime adoptingDate, Integer waterInterval, Integer nutritionInterval, Integer repottingInterval, Double sunshine, Double waterSupply, Integer highTemperature, Integer lowTemperature, User user) {
+    public Plant(String name, String picture, LocalDate adoptingDate, Integer waterInterval, Integer nutritionInterval, Integer repottingInterval, Double sunshine, Double waterSupply, Integer highTemperature, Integer lowTemperature, User user) {
         this.name = name;
         this.picture = picture;
         this.adoptingDate = adoptingDate;

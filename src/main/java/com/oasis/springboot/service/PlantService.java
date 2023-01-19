@@ -18,21 +18,20 @@ import java.util.stream.Collectors;
 public class PlantService {
 
     private final PlantRepository plantRepository;
+    private final UserService userService;
 
     @Transactional
-    public void savePlant(PlantSaveRequestDto requestDto) {
-        //user 관련 정보 jwt에서 가져오는 과정 필요
-        User user = User.builder()
-                .email("aaa@gmail.com")
-                .name("aaa")
-                .picture("aaa")
-                .role(Role.USER)
-                .build();
+    public String savePlant(PlantSaveRequestDto requestDto) {
+        User user = userService.findByEmail();
+        System.out.print(user);
+
         plantRepository.save(requestDto.toEntity(user));
+        return "식물 등록 성공";
     }
 
-    public List<PlantsResponseDto> getPlants(Long userId) {
-        //user관련 정보 jwt에서 가져오는 과정 필요 + parameter 수정 필요 + 최근 수정 날짜 수정 필요
+    //유저가 같이 딸려서 n+1 문제 발생 흑흑  -> fetch join으로 할 수 있을거 같기도 함 한번 해봐야 될듯
+    public List<PlantsResponseDto> getPlants() {
+        Long userId = userService.findUserId();
         return plantRepository.findByUser_Id(userId)
                 .stream()
                 .map(PlantsResponseDto::new)

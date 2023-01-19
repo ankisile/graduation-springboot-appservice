@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class JournalRepositoryTest {
     public void init() {
         User user = User.builder()
                 .email("aaa@gmail.com")
+                .password("1111")
                 .name("aaa")
                 .picture("aaa")
                 .role(Role.USER)
@@ -45,7 +47,7 @@ public class JournalRepositoryTest {
         Plant plant = Plant.builder()
                 .name("plantName")
                 .picture("ddd.jpg")
-                .adoptingDate(LocalDateTime.now())
+                .adoptingDate(LocalDate.now())
                 .waterInterval(5)
                 .nutritionInterval(90)
                 .repottingInterval(90)

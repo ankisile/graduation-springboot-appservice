@@ -6,7 +6,6 @@ import com.oasis.springboot.domain.calendar.CareType;
 import com.oasis.springboot.domain.plant.Plant;
 import com.oasis.springboot.domain.plant.PlantRepository;
 import com.oasis.springboot.domain.user.User;
-import com.oasis.springboot.domain.user.UserRepository;
 import com.oasis.springboot.dto.calendar.CalendarListResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,12 +19,10 @@ public class CalendarService {
 
     private final CalendarRepository calendarRepository;
     private final PlantRepository plantRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public void savePlantCare(Long userId, Long plantId, CareType careType) {
-        //user 정보 가져오기
-        User user = userRepository.findById(userId)
-                .orElseThrow(()->new IllegalArgumentException("해당 유저가 없습니다. id = "+ userId));
+    public String savePlantCare(Long plantId, CareType careType) {
+        User user = userService.findByEmail();
         Plant plant = plantRepository.findById(plantId)
                 .orElseThrow(()->new IllegalArgumentException("해당 식물이 없습니다. id = "+ plantId));
 
@@ -37,6 +34,7 @@ public class CalendarService {
 
         calendarRepository.save(calendar);
 
+        return "등록 성공";
     }
 
     //앱의 속도를 빠르게 하기 위해서 어떻게 해야할까나 -> 일단은 user를 가지고 가져오기

@@ -1,5 +1,9 @@
 package com.oasis.springboot.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -19,10 +23,16 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+@Tag(name = "home", description = "메인화면 API")
 @RestController
 @RequestMapping("/api/home")
 public class HomeController {
 
+    @Operation(summary = "get weather", description = "지역에 대한 날씨를 가져오기")
+    @Parameters({
+            @Parameter(name = "x", description = "x좌표", example = "60"),
+            @Parameter(name = "y", description = "y좌표", example = "127"),
+    })
     @GetMapping("")
     public JSONArray getWeather(@RequestParam("x") String x, @RequestParam("y") String y) throws IOException, ParseException{
         String apiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst";

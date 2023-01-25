@@ -26,6 +26,7 @@ public class PlantService {
         System.out.print(user);
 
         plantRepository.save(requestDto.toEntity(user));
+        //adopting date 도 넣어야 됨
         return "식물 등록 성공";
     }
 

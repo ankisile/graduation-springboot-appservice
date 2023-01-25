@@ -55,6 +55,7 @@ public class SecurityConfig{
                         .antMatchers("/api/home").permitAll()
                         .antMatchers("/api/signup").permitAll()
                         .antMatchers("/api/signin").permitAll()
+                        .antMatchers("/api/places").permitAll()
                         .anyRequest().authenticated()
                         .and()
                         .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class) //OAUTH2 사용한다면 변경 필요

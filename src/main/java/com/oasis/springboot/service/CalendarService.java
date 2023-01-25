@@ -40,6 +40,7 @@ public class CalendarService {
     //앱의 속도를 빠르게 하기 위해서 어떻게 해야할까나 -> 일단은 user를 가지고 가져오기
     public List<CalendarListResponseDto> getCalendar(Long userId) {
         //이것도 유저 정보가져와서 userId로 할 수 있을듯 + N+1 문제 해결 필요
+        //plantService 주석 확인좀ㅎ
         return calendarRepository.findByUser_Id(userId)
                 .stream()
                 .map(CalendarListResponseDto::new)

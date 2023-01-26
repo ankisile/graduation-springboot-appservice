@@ -60,14 +60,14 @@
 //
 //    @AfterEach
 //    public void cleanUp() {
-//        plantRepository.deleteAll();
+//        plantRepository.deleteAllInBatch();
 //        userRepository.deleteAll();
 //    }
 //
 //    @Test
 //    public void testPlantFindByUserId() {
 //        //given
-//        String name = "plantName";
+//        String name = "plant1";
 //        Long userId = userRepository.findAll().get(0).getId();
 //
 //        //when

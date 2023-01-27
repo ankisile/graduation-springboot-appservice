@@ -5,11 +5,13 @@ import com.oasis.springboot.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class PlantSaveRequestDto {
     private String name;
@@ -24,10 +26,9 @@ public class PlantSaveRequestDto {
     private Integer lowTemperature;
 
     @Builder
-    public PlantSaveRequestDto(String name, String picture, LocalDate adoptingDate, Integer waterInterval, Integer nutritionInterval, Integer repottingInterval, Double sunshine, Double waterSupply, Integer highTemperature, Integer lowTemperature) {
+    public PlantSaveRequestDto(String name, String picture, Integer waterInterval, Integer nutritionInterval, Integer repottingInterval, Double sunshine, Double waterSupply, Integer highTemperature, Integer lowTemperature) {
         this.name = name;
         this.picture = picture;
-        this.adoptingDate = adoptingDate;
         this.waterInterval = waterInterval;
         this.nutritionInterval = nutritionInterval;
         this.repottingInterval = repottingInterval;
@@ -40,15 +41,15 @@ public class PlantSaveRequestDto {
     public Plant toEntity(User user){
         return Plant.builder()
                 .name(name)
-                .picture("ddd.jpg")
+                .picture(picture)
                 .adoptingDate(LocalDate.now())
-                .waterInterval(5)
-                .nutritionInterval(90)
-                .repottingInterval(90)
-                .sunshine(3.5)
-                .waterSupply(4.5)
-                .highTemperature(25)
-                .lowTemperature(30)
+                .waterInterval(waterInterval)
+                .nutritionInterval(nutritionInterval)
+                .repottingInterval(repottingInterval)
+                .sunshine(sunshine)
+                .waterSupply(waterSupply)
+                .highTemperature(highTemperature)
+                .lowTemperature(lowTemperature)
                 .user(user)
                 .build();
     }

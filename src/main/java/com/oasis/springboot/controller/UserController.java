@@ -25,7 +25,7 @@ public class UserController {
     @PostMapping(value = "/signup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> signup(
             @Schema(name = "RegisterDto",
-                    description = "회원가입(json)",
+                    description = "회원가입(String 이지만 json)",
                     required = true,
                     example = "{\n" +
                             "    \"email\":\"string@(이메일 주소)\",\n" +

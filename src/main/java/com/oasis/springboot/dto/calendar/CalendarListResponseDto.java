@@ -10,12 +10,12 @@ import java.time.format.DateTimeFormatter;
 @Getter
 public class CalendarListResponseDto {
     private String date;
-    private Plant plant;
+    private String plantName;
     private CareType careType;
 
     public CalendarListResponseDto(Calendar entity) {
         this.date = entity.getDate().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        this.plant = entity.getPlant();
+        this.plantName = entity.getPlantName();
         this.careType = entity.getType();
     }
 }

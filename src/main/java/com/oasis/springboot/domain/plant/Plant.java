@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -29,19 +28,13 @@ public class Plant extends BaseTimeEntity {
     private LocalDate adoptingDate;
 
     @Column
-    private Integer waterInterval;
+    private Integer waterAlarmInterval;
 
     @Column
-    private Integer nutritionInterval;
-
-    @Column
-    private Integer repottingInterval;
+    private String waterSupply;
 
     @Column
     private Double sunshine;
-
-    @Column
-    private Double waterSupply;
 
     @Column
     private Integer highTemperature;
@@ -57,15 +50,13 @@ public class Plant extends BaseTimeEntity {
     private User user;
 
     @Builder
-    public Plant(String name, String picture, LocalDate adoptingDate, Integer waterInterval, Integer nutritionInterval, Integer repottingInterval, Double sunshine, Double waterSupply, Integer highTemperature, Integer lowTemperature, User user) {
+    public Plant(String name, String picture, LocalDate adoptingDate, Integer waterAlarmInterval, String waterSupply, Double sunshine, Integer highTemperature, Integer lowTemperature, User user) {
         this.name = name;
         this.picture = picture;
         this.adoptingDate = adoptingDate;
-        this.waterInterval = waterInterval;
-        this.nutritionInterval = nutritionInterval;
-        this.repottingInterval = repottingInterval;
-        this.sunshine = sunshine;
+        this.waterAlarmInterval = waterAlarmInterval;
         this.waterSupply = waterSupply;
+        this.sunshine = sunshine;
         this.highTemperature = highTemperature;
         this.lowTemperature = lowTemperature;
         this.recentRecordDate = LocalDate.now();

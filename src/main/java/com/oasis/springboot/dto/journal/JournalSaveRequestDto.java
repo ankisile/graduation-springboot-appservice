@@ -5,8 +5,10 @@ import com.oasis.springboot.domain.plant.Plant;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class JournalSaveRequestDto {
     private String content;
@@ -14,9 +16,7 @@ public class JournalSaveRequestDto {
 
     @Builder
     public JournalSaveRequestDto(String content, String picture) {
-        //picture 수정 필요
         this.content = content;
-        this.picture = picture;
     }
 
     public Journal toEntity(Plant plant){

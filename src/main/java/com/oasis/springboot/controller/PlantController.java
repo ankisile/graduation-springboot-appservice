@@ -1,7 +1,5 @@
 package com.oasis.springboot.controller;
 
-import com.oasis.springboot.domain.user.User;
-import com.oasis.springboot.dto.plant.PlantSaveRequestDto;
 import com.oasis.springboot.dto.plant.PlantsResponseDto;
 import com.oasis.springboot.response.ListResponse;
 import com.oasis.springboot.response.ResponseService;
@@ -14,11 +12,9 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 
 @Tag(name = "Plant", description = "Plant 등록, 전체 Plants 조회 API -> 삭제는 일단 하지말아보샘")
 @RequiredArgsConstructor
@@ -37,11 +33,9 @@ public class PlantController {
                     example = "{\n" +
                             "  \"name\": \"string\",\n" +
                             "  \"picture\": \"string\",\n" +
-                            "  \"waterInterval\": 7,\n" +
-                            "  \"nutritionInterval\": 90,\n" +
-                            "  \"repottingInterval\": 90,\n" +
+                            "  \"waterAlarmInterval\": 7,\n" +
+                            "  \"waterSupply\": \"흙을 촉촉하게 유지함(물에 잠기지 않도록 주의)\",\n" +
                             "  \"sunshine\": 5,\n" +
-                            "  \"waterSupply\": 5,\n" +
                             "  \"highTemperature\": 23,\n" +
                             "  \"lowTemperature\": 25\n" +
                             "}"
@@ -52,7 +46,7 @@ public class PlantController {
         return responseService.getSingleResponse(plantService.savePlant(requestDto, multipartFile));
     }
 
-    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
+    @Operation(summary = "get plants", description = "식물 조회 -> 홈화면, 식물일지 부분에서 쓰면 됨", security = { @SecurityRequirement(name = "bearer-key") })
     @GetMapping("")
     public ListResponse<PlantsResponseDto> getPlants(){
         return responseService.getListResponse(plantService.getPlants());

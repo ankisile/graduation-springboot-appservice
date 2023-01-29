@@ -48,11 +48,9 @@
 //                .name("plantName")
 //                .picture("ddd.jpg")
 //                .adoptingDate(LocalDate.now())
-//                .waterInterval(5)
-//                .nutritionInterval(90)
-//                .repottingInterval(90)
+//                .waterAlarmInterval(5)
+//                .waterSupply("흙을 촉촉하게 유지함(물에 잠기지 않도록 주의)")
 //                .sunshine(3.5)
-//                .waterSupply(4.5)
 //                .highTemperature(25)
 //                .lowTemperature(30)
 //                .user(user)
@@ -70,8 +68,8 @@
 //
 //    @AfterEach
 //    public void cleanUp() {
-//        journalRepository.deleteAll();
-//        plantRepository.deleteAll();
+//        journalRepository.deleteAllInBatch();
+//        plantRepository.deleteAllInBatch();
 //        userRepository.deleteAll();
 //    }
 //
@@ -82,7 +80,7 @@
 //        Long plantId = plantRepository.findAll().get(0).getId();
 //
 //        //when
-//        List<Journal> journalList = journalRepository.findByPlant_IdOrderByIdDesc(plantId);
+//        List<Journal> journalList = journalRepository.findJournalsByPlantIdFetchJoin(plantId);
 //
 //        //then
 //        Journal journal = journalList.get(0);

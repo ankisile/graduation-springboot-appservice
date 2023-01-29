@@ -17,23 +17,19 @@ public class PlantSaveRequestDto {
     private String name;
     private String picture;
     private LocalDate adoptingDate;
-    private Integer waterInterval;
-    private Integer nutritionInterval;
-    private Integer repottingInterval;
+    private Integer waterAlarmInterval;
+    private String waterSupply;
     private Double sunshine;
-    private Double waterSupply;
     private Integer highTemperature;
     private Integer lowTemperature;
 
     @Builder
-    public PlantSaveRequestDto(String name, String picture, Integer waterInterval, Integer nutritionInterval, Integer repottingInterval, Double sunshine, Double waterSupply, Integer highTemperature, Integer lowTemperature) {
+    public PlantSaveRequestDto(String name, String picture, Integer waterAlarmInterval,  String waterSupply,  Double sunshine,Integer highTemperature, Integer lowTemperature) {
         this.name = name;
         this.picture = picture;
-        this.waterInterval = waterInterval;
-        this.nutritionInterval = nutritionInterval;
-        this.repottingInterval = repottingInterval;
-        this.sunshine = sunshine;
+        this.waterAlarmInterval = waterAlarmInterval;
         this.waterSupply = waterSupply;
+        this.sunshine = sunshine;
         this.highTemperature = highTemperature;
         this.lowTemperature = lowTemperature;
     }
@@ -43,11 +39,9 @@ public class PlantSaveRequestDto {
                 .name(name)
                 .picture(picture)
                 .adoptingDate(LocalDate.now())
-                .waterInterval(waterInterval)
-                .nutritionInterval(nutritionInterval)
-                .repottingInterval(repottingInterval)
-                .sunshine(sunshine)
+                .waterAlarmInterval(waterAlarmInterval)
                 .waterSupply(waterSupply)
+                .sunshine(sunshine)
                 .highTemperature(highTemperature)
                 .lowTemperature(lowTemperature)
                 .user(user)

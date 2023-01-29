@@ -17,7 +17,6 @@
 //import org.springframework.test.context.junit.jupiter.SpringExtension;
 //
 //import java.time.LocalDate;
-//import java.time.LocalDateTime;
 //import java.util.List;
 //
 //import static org.assertj.core.api.Assertions.assertThat;
@@ -39,29 +38,15 @@
 //        User user = User.builder()
 //                .email("aaa@gmail.com")
 //                .name("aaa")
+//                .password("qqq")
 //                .picture("aaa")
 //                .role(Role.USER)
 //                .build();
 //        userRepository.save(user);
 //
-//        Plant plant = Plant.builder()
-//                .name("plantName")
-//                .picture("ddd.jpg")
-//                .adoptingDate(LocalDate.now())
-//                .waterInterval(5)
-//                .nutritionInterval(90)
-//                .repottingInterval(90)
-//                .sunshine(3.5)
-//                .waterSupply(4.5)
-//                .highTemperature(25)
-//                .lowTemperature(30)
-//                .user(user)
-//                .build();
-//        plantRepository.save(plant);
-//
 //        Calendar calendar = Calendar.builder()
 //                .type(CareType.WATER)
-//                .plant(plant)
+//                .plantName("ppl")
 //                .user(user)
 //                .build();
 //        calendarRepository.save(calendar);
@@ -78,7 +63,7 @@
 //    public void testCalendarFindByUserId() {
 //        Long userId = userRepository.findAll().get(0).getId();
 //
-//        List<Calendar> calendarList = calendarRepository.findByUser_Id(userId);
+//        List<Calendar> calendarList = calendarRepository.findAllByUserIdFetchJoin(userId);
 //
 //        Calendar calendar = calendarList.get(0);
 //        assertThat(calendar.getDate()).isEqualTo(LocalDate.now());

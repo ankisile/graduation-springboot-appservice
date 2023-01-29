@@ -56,7 +56,7 @@ public class PlantService {
 
         Calendar calendar = Calendar.builder()
                 .type(CareType.ADOPTING)
-                .plant(plant)
+                .plantName(requestDto.getName())
                 .user(user)
                 .build();
         calendarRepository.save(calendar);

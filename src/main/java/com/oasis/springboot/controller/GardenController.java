@@ -19,20 +19,20 @@ public class GardenController {
     private final GardenService gardenService;
     private final ResponseService responseService;
 
-    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") }, summary = "전체 식물도감")
     @GetMapping()
     public ListResponse<GardenListResponseDto> getGardenList(){
         return responseService.getListResponse(gardenService.getGardenList());
     }
 
 
-    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") }, summary = "식물도감 디테일")
     @GetMapping("/{gardenId}")
     public SingleResponse<GardenDetailResponseDto> getGardenDetail(@PathVariable Long gardenId){
         return responseService.getSingleResponse(gardenService.getDetailGarden(gardenId));
     }
 
-    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") }, summary = "식물 도감 검색")
     @GetMapping("/search")
     public ListResponse<GardenListResponseDto> searchGarden(@RequestParam String keyword){
         return responseService.getListResponse(gardenService.searchGardenList(keyword));

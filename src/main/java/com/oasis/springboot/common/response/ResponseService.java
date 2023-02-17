@@ -27,4 +27,14 @@ public class ResponseService {
         response.setSuccess(true);
         response.setMessage("SUCCESS");
     }
+
+    public CommonResponse getErrorResponse(int code, String message){
+        CommonResponse response = new CommonResponse();
+        response.setSuccess(false);
+        response.setCode(code);
+        response.setMessage(message);
+        return response;
+    }
+
 }
+

@@ -1,5 +1,8 @@
 package com.oasis.springboot.controller;
 
+import com.oasis.springboot.common.exception.Exception;
+import com.oasis.springboot.common.exception.ExistUserException;
+import com.oasis.springboot.common.response.CommonResponse;
 import com.oasis.springboot.common.response.ResponseService;
 import com.oasis.springboot.common.response.SingleResponse;
 import com.oasis.springboot.dto.UserMainResponseDto;
@@ -73,4 +76,9 @@ public class UserController {
 
 
     //유저 북마크
+
+    @ExceptionHandler(ExistUserException.class)
+    public CommonResponse existUserException(ExistUserException e){
+        return responseService.getErrorResponse(Exception.EXIST_USER.getCode(), Exception.EXIST_USER.getMessage());
+    }
 }

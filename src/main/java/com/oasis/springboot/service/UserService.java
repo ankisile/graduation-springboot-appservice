@@ -1,6 +1,9 @@
 package com.oasis.springboot.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.oasis.springboot.common.exception.EmptyAuthenticationException;
+import com.oasis.springboot.common.exception.ExistUserException;
+import com.oasis.springboot.common.exception.InvalidateUserException;
 import com.oasis.springboot.domain.user.Role;
 import com.oasis.springboot.domain.user.User;
 import com.oasis.springboot.domain.user.UserRepository;
@@ -36,7 +39,7 @@ public class UserService {
         }
 
         if (userRepository.findByEmail(requestDto.getEmail()).orElse(null) != null) {
-            throw new RuntimeException("이미 가입된 유저입니다.");
+            throw new ExistUserException();
         }
 
         String s3Url = "https://graduationplantbucket.s3.ap-northeast-2.amazonaws.com/static/flower-pot.png";
@@ -63,30 +66,27 @@ public class UserService {
     public UserMainResponseDto findById(Long id) {
         return userRepository.findById(id)
                 .map(user -> new UserMainResponseDto(user))
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 user 입니다. id=" + id));
+                .orElseThrow(InvalidateUserException::new);
     }
 
     public UserMainResponseDto findUserInfo() {
-        String email = SecurityUtil.getCurrentEmail().orElseThrow(() ->
-                new RuntimeException("Security Context에 인증 정보가 없습니다."));
+        String email = findUserEmail();
 
         return userRepository.findByEmail(email)
                 .map(user -> new UserMainResponseDto(user))
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 user 입니다. email=" + email));
+                .orElseThrow(InvalidateUserException::new);
     }
 
     public User findByEmail(){
-        String email = SecurityUtil.getCurrentEmail().orElseThrow(() ->
-                new RuntimeException("Security Context에 인증 정보가 없습니다."));
-        return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("존재하지 않는 user 입니다. email=" + email));
+        String email = findUserEmail();
+        return userRepository.findByEmail(email).orElseThrow(InvalidateUserException::new);
 
     }
 
     public Long findUserId(){
-        String email = SecurityUtil.getCurrentEmail().orElseThrow(() ->
-                new RuntimeException("Security Context에 인증 정보가 없습니다."));
+        String email = findUserEmail();
         System.out.println(email);
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("존재하지 않는 user 입니다. email=" + email));
+        User user = userRepository.findByEmail(email).orElseThrow(InvalidateUserException::new);
         return user.getId();
     }
 
@@ -105,9 +105,13 @@ public class UserService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
         return "success";
+    }
+
+    private String findUserEmail(){
+        String email = SecurityUtil.getCurrentEmail()
+                .orElseThrow(EmptyAuthenticationException::new);
+        return email;
     }
 
 }

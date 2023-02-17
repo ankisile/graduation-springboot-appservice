@@ -2,9 +2,11 @@ package com.oasis.springboot.controller;
 
 import com.oasis.springboot.common.exception.Exception;
 import com.oasis.springboot.common.exception.ExistUserException;
+import com.oasis.springboot.common.exception.NotMatchPasswordException;
 import com.oasis.springboot.common.response.CommonResponse;
 import com.oasis.springboot.common.response.ResponseService;
 import com.oasis.springboot.common.response.SingleResponse;
+import com.oasis.springboot.dto.PasswordDto;
 import com.oasis.springboot.dto.UserMainResponseDto;
 import com.oasis.springboot.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -67,11 +69,10 @@ public class UserController {
         return responseService.getSingleResponse(userService.updateUserInfo(nickName, file));
     }
 
-    //유저 비번 변경
     @Operation(security = { @SecurityRequirement(name = "bearer-key") }, summary = "비밀번호 변경")
     @PatchMapping(value ="/user/changepw")
-    public SingleResponse<String> changeUserPassword(){
-        return responseService.getSingleResponse("Dd");
+    public SingleResponse<String> changeUserPassword(@RequestBody PasswordDto passwordDto){
+        return responseService.getSingleResponse(userService.updatePassword(passwordDto));
     }
 
 
@@ -80,5 +81,10 @@ public class UserController {
     @ExceptionHandler(ExistUserException.class)
     public CommonResponse existUserException(ExistUserException e){
         return responseService.getErrorResponse(Exception.EXIST_USER.getCode(), Exception.EXIST_USER.getMessage());
+    }
+
+    @ExceptionHandler(NotMatchPasswordException.class)
+    public CommonResponse notMatchPasswordException(NotMatchPasswordException e){
+        return responseService.getErrorResponse(Exception.NOT_MATCH_PASSWORD.getCode(), Exception.NOT_MATCH_PASSWORD.getMessage());
     }
 }

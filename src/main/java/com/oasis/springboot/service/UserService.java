@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oasis.springboot.common.exception.EmptyAuthenticationException;
 import com.oasis.springboot.common.exception.ExistUserException;
 import com.oasis.springboot.common.exception.InvalidateUserException;
+import com.oasis.springboot.common.exception.NotMatchPasswordException;
 import com.oasis.springboot.domain.user.Role;
 import com.oasis.springboot.domain.user.User;
 import com.oasis.springboot.domain.user.UserRepository;
+import com.oasis.springboot.dto.PasswordDto;
 import com.oasis.springboot.dto.RegisterDto;
 import com.oasis.springboot.dto.UserMainResponseDto;
 import com.oasis.springboot.common.handler.S3Uploader;
@@ -27,7 +29,6 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final S3Uploader s3Uploader;
 
-    //에러 핸들러 처리 필요
     @Transactional
     public String signup(String string, MultipartFile file) {
         ObjectMapper mapper = new ObjectMapper();
@@ -70,7 +71,7 @@ public class UserService {
     }
 
     public UserMainResponseDto findUserInfo() {
-        String email = findUserEmail();
+        String email = findCurrentUserEmail();
 
         return userRepository.findByEmail(email)
                 .map(user -> new UserMainResponseDto(user))
@@ -78,13 +79,13 @@ public class UserService {
     }
 
     public User findByEmail(){
-        String email = findUserEmail();
+        String email = findCurrentUserEmail();
         return userRepository.findByEmail(email).orElseThrow(InvalidateUserException::new);
 
     }
 
     public Long findUserId(){
-        String email = findUserEmail();
+        String email = findCurrentUserEmail();
         System.out.println(email);
         User user = userRepository.findByEmail(email).orElseThrow(InvalidateUserException::new);
         return user.getId();
@@ -108,7 +109,18 @@ public class UserService {
         return "success";
     }
 
-    private String findUserEmail(){
+    @Transactional
+    public String updatePassword(PasswordDto passwordDto){
+        User user = findByEmail();
+        if(!passwordEncoder.matches(passwordDto.getCurrentPW(), user.getPassword()))
+            throw new NotMatchPasswordException();
+        String newPw = passwordEncoder.encode(passwordDto.getNewPW());
+        user.modifyPassword(newPw);
+        return "success";
+    }
+
+
+    private String findCurrentUserEmail(){
         String email = SecurityUtil.getCurrentEmail()
                 .orElseThrow(EmptyAuthenticationException::new);
         return email;

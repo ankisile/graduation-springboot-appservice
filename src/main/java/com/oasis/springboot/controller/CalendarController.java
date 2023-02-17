@@ -2,19 +2,16 @@ package com.oasis.springboot.controller;
 
 import com.oasis.springboot.domain.calendar.CareType;
 import com.oasis.springboot.dto.calendar.CalendarListResponseDto;
-import com.oasis.springboot.response.ListResponse;
-import com.oasis.springboot.response.ResponseService;
-import com.oasis.springboot.response.SingleResponse;
+import com.oasis.springboot.common.response.ListResponse;
+import com.oasis.springboot.common.response.ResponseService;
+import com.oasis.springboot.common.response.SingleResponse;
 import com.oasis.springboot.service.CalendarService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Tag(name = "스케쥴")
 @RequiredArgsConstructor

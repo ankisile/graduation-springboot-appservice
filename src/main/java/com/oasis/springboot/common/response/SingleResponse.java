@@ -1,4 +1,4 @@
-package com.oasis.springboot.response;
+package com.oasis.springboot.common.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

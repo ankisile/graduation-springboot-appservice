@@ -1,4 +1,4 @@
-package com.oasis.springboot.jwt;
+package com.oasis.springboot.common.jwt;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;

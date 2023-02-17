@@ -1,4 +1,4 @@
-package com.oasis.springboot.config;
+package com.oasis.springboot.common.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;

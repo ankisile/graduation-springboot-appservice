@@ -7,7 +7,7 @@ import com.oasis.springboot.domain.plant.Plant;
 import com.oasis.springboot.domain.plant.PlantRepository;
 import com.oasis.springboot.dto.journal.JournalSaveRequestDto;
 import com.oasis.springboot.dto.journal.JournalsResponseDto;
-import com.oasis.springboot.handler.S3Uploader;
+import com.oasis.springboot.common.handler.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,7 +54,6 @@ public class JournalService {
         return "식물 일지 등록 성공";
     }
 
-    //쿼리 어케 짤지 고민좀 해봐야 될듯흑흑
     public List<JournalsResponseDto> getJournals(Long plantId){
         return journalRepository.findJournalsByPlantIdFetchJoin(plantId)
                 .stream()

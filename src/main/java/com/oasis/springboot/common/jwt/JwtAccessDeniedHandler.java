@@ -1,4 +1,4 @@
-package com.oasis.springboot.jwt;
+package com.oasis.springboot.common.jwt;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;

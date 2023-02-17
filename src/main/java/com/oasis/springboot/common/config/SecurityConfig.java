@@ -1,12 +1,11 @@
-package com.oasis.springboot.config;
+package com.oasis.springboot.common.config;
 
-import com.oasis.springboot.jwt.JwtAccessDeniedHandler;
-import com.oasis.springboot.jwt.JwtAuthenticationEntryPoint;
-import com.oasis.springboot.jwt.JwtFilter;
-import com.oasis.springboot.jwt.JwtSecurityConfig;
+import com.oasis.springboot.common.jwt.JwtAccessDeniedHandler;
+import com.oasis.springboot.common.jwt.JwtAuthenticationEntryPoint;
+import com.oasis.springboot.common.jwt.JwtFilter;
+import com.oasis.springboot.common.jwt.JwtSecurityConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;

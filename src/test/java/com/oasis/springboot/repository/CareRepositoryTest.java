@@ -1,14 +1,12 @@
-//package com.oasis.springboot.plant;
+//package com.oasis.springboot.repository;
 //
 //import com.oasis.springboot.domain.calendar.Calendar;
 //import com.oasis.springboot.domain.calendar.CalendarRepository;
 //import com.oasis.springboot.domain.calendar.CareType;
-//import com.oasis.springboot.domain.plant.Plant;
 //import com.oasis.springboot.domain.plant.PlantRepository;
 //import com.oasis.springboot.domain.user.Role;
 //import com.oasis.springboot.domain.user.User;
 //import com.oasis.springboot.domain.user.UserRepository;
-//import org.junit.jupiter.api.AfterEach;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
 //import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,13 +48,6 @@
 //                .user(user)
 //                .build();
 //        calendarRepository.save(calendar);
-//    }
-//
-//    @AfterEach
-//    public void cleanUp() {
-//        calendarRepository.deleteAllInBatch();
-//        plantRepository.deleteAllInBatch();
-//        userRepository.deleteAll();
 //    }
 //
 //    @Test

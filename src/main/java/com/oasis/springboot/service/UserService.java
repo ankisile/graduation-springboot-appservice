@@ -6,8 +6,8 @@ import com.oasis.springboot.domain.user.User;
 import com.oasis.springboot.domain.user.UserRepository;
 import com.oasis.springboot.dto.RegisterDto;
 import com.oasis.springboot.dto.UserMainResponseDto;
-import com.oasis.springboot.handler.S3Uploader;
-import com.oasis.springboot.jwt.SecurityUtil;
+import com.oasis.springboot.common.handler.S3Uploader;
+import com.oasis.springboot.common.jwt.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -88,6 +88,26 @@ public class UserService {
         System.out.println(email);
         User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("존재하지 않는 user 입니다. email=" + email));
         return user.getId();
+    }
+
+    @Transactional
+    public String updateUserInfo(String nickName, MultipartFile file){
+        User user = findByEmail();
+        System.out.print(nickName);
+        if(nickName != null)
+            user.modifyNickName(nickName);
+
+        try {
+            if(file != null){
+                String s3Url = s3Uploader.upload(file, "static");
+                user.modifyPicture(s3Url);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        return "success";
     }
 
 }

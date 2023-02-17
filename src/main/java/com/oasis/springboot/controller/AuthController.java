@@ -2,7 +2,7 @@ package com.oasis.springboot.controller;
 
 import com.oasis.springboot.dto.LoginDto;
 import com.oasis.springboot.dto.TokenResponseDto;
-import com.oasis.springboot.jwt.JwtFilter;
+import com.oasis.springboot.common.jwt.JwtFilter;
 import com.oasis.springboot.service.AuthService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

@@ -13,7 +13,7 @@ public class UserMainResponseDto {
 
     public UserMainResponseDto(User user) {
         this.email = user.getEmail();
-        this.nickName = user.getEmail();
+        this.nickName = user.getName();
         this.picture = user.getPicture();
     }
 }

@@ -1,4 +1,4 @@
-//package com.oasis.springboot.plant;
+//package com.oasis.springboot.repository;
 //
 //import com.oasis.springboot.domain.journal.Journal;
 //import com.oasis.springboot.domain.journal.JournalRepository;
@@ -7,7 +7,6 @@
 //import com.oasis.springboot.domain.user.Role;
 //import com.oasis.springboot.domain.user.User;
 //import com.oasis.springboot.domain.user.UserRepository;
-//import org.junit.jupiter.api.AfterEach;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
 //import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +15,6 @@
 //import org.springframework.test.context.junit.jupiter.SpringExtension;
 //
 //import java.time.LocalDate;
-//import java.time.LocalDateTime;
 //import java.util.List;
 //
 //import static org.assertj.core.api.Assertions.assertThat;
@@ -64,13 +62,6 @@
 //                .build();
 //        journalRepository.save(journal);
 //
-//    }
-//
-//    @AfterEach
-//    public void cleanUp() {
-//        journalRepository.deleteAllInBatch();
-//        plantRepository.deleteAllInBatch();
-//        userRepository.deleteAll();
 //    }
 //
 //    @Test

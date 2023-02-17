@@ -9,7 +9,7 @@ import com.oasis.springboot.domain.plant.PlantRepository;
 import com.oasis.springboot.domain.user.User;
 import com.oasis.springboot.dto.plant.PlantSaveRequestDto;
 import com.oasis.springboot.dto.plant.PlantsResponseDto;
-import com.oasis.springboot.handler.S3Uploader;
+import com.oasis.springboot.common.handler.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,4 +1,4 @@
-package com.oasis.springboot.jwt;
+package com.oasis.springboot.common.jwt;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

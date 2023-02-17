@@ -4,8 +4,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+import org.json.JSONObject;
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +35,7 @@ public class HomeController {
             @Parameter(name = "y", description = "y좌표", example = "127"),
     })
     @GetMapping("")
-    public JSONArray getWeather(@RequestParam("x") String x, @RequestParam("y") String y) throws IOException, ParseException{
+    public JSONArray getWeather(@RequestParam("x") String x, @RequestParam("y") String y) throws IOException, ParseException {
         String apiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst";
 
         String serviceKey = "UdJoe0RU%2BfA4noQhiQupw5F43s9H%2BGaTyKVFX9guM4wsuoWR9SWXPtQ4pHzWpcOpP%2FBo6enHnmibSfN55xy7tQ%3D%3D";

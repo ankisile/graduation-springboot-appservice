@@ -1,11 +1,10 @@
-//package com.oasis.springboot.plant;
+//package com.oasis.springboot.repository;
 //
 //import com.oasis.springboot.domain.plant.Plant;
 //import com.oasis.springboot.domain.plant.PlantRepository;
 //import com.oasis.springboot.domain.user.Role;
 //import com.oasis.springboot.domain.user.User;
 //import com.oasis.springboot.domain.user.UserRepository;
-//import org.junit.jupiter.api.AfterEach;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
 //import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,33 +40,26 @@
 //                .build();
 //        userRepository.save(user);
 //
-//        String name = "plantName";
 //        Plant plant = Plant.builder()
-//                .name(name)
+//                .name("plantName")
 //                .picture("ddd.jpg")
 //                .adoptingDate(LocalDate.now())
-//                .waterInterval(5)
-//                .nutritionInterval(90)
-//                .repottingInterval(90)
+//                .waterAlarmInterval(5)
+//                .waterSupply("흙을 촉촉하게 유지함(물에 잠기지 않도록 주의)")
 //                .sunshine(3.5)
-//                .waterSupply(4.5)
 //                .highTemperature(25)
 //                .lowTemperature(30)
 //                .user(user)
 //                .build();
 //        plantRepository.save(plant);
+//
 //    }
 //
-//    @AfterEach
-//    public void cleanUp() {
-//        plantRepository.deleteAllInBatch();
-//        userRepository.deleteAll();
-//    }
 //
 //    @Test
 //    public void testPlantFindByUserId() {
 //        //given
-//        String name = "plant1";
+//        String name = "plantName";
 //        Long userId = userRepository.findAll().get(0).getId();
 //
 //        //when
@@ -79,21 +71,6 @@
 //        assertThat(plant1.getCreatedDate()).isBefore(LocalDateTime.now());
 //
 //    }
-//
-////    @Test
-////    public void testPlantDelete(){
-////        //given
-////        Long userId = userRepository.findAll().get(0).getId();
-////        List<Plant> plantList = plantRepository.findByUser_Id(userId);
-////        Plant deletePlant = plantList.get(0);
-////
-////        //when
-////        plantRepository.delete(deletePlant);
-////        plantList =  plantRepository.findByUser_Id(userId);
-////
-////        //then
-////        assertThat(plantList.size()).isEqualTo(0);
-////    }
 //
 //
 //}

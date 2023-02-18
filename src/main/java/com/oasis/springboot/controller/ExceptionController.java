@@ -1,8 +1,7 @@
 package com.oasis.springboot.controller;
 
-import com.oasis.springboot.common.exception.EmptyAuthenticationException;
+import com.oasis.springboot.common.exception.*;
 import com.oasis.springboot.common.exception.Exception;
-import com.oasis.springboot.common.exception.InvalidateUserException;
 import com.oasis.springboot.common.response.CommonResponse;
 import com.oasis.springboot.common.response.ResponseService;
 import lombok.RequiredArgsConstructor;
@@ -28,4 +27,15 @@ public class ExceptionController {
         return responseService.getErrorResponse(Exception.EMPTY_AUTHENTICATION.getCode(), Exception.EMPTY_AUTHENTICATION.getMessage());
     }
 
+    @ExceptionHandler(InvalidatePlantException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    private CommonResponse invalidatePlantException(InvalidatePlantException e){
+        return responseService.getErrorResponse(Exception.INVALIDATE_PLANT.getCode(), Exception.INVALIDATE_PLANT.getMessage());
+    }
+
+    @ExceptionHandler(InvalidateGardenException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    private CommonResponse invalidateGardenException(InvalidateGardenException e){
+        return responseService.getErrorResponse(Exception.INVALIDATE_GARDEN.getCode(), Exception.INVALIDATE_GARDEN.getMessage());
+    }
 }

@@ -10,6 +10,7 @@ import com.oasis.springboot.domain.journal.JournalRepository;
 import com.oasis.springboot.domain.plant.Plant;
 import com.oasis.springboot.domain.plant.PlantRepository;
 import com.oasis.springboot.domain.user.User;
+import com.oasis.springboot.dto.plant.PlantDetailResponseDto;
 import com.oasis.springboot.dto.plant.PlantSaveRequestDto;
 import com.oasis.springboot.dto.plant.PlantsResponseDto;
 import com.oasis.springboot.common.handler.S3Uploader;
@@ -105,7 +106,11 @@ public class PlantService {
         return "식물 삭제 성공";
     }
 
-    //식물 상세
+    public PlantDetailResponseDto getPlantDetail(Long plantId){
+        Plant plant = plantRepository.findById(plantId)
+                .orElseThrow(InvalidatePlantException::new);
+        return new PlantDetailResponseDto(plant);
+    }
 
     //식물 수정
 

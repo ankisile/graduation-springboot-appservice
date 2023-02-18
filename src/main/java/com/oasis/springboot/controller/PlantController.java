@@ -1,5 +1,6 @@
 package com.oasis.springboot.controller;
 
+import com.oasis.springboot.dto.plant.PlantDetailResponseDto;
 import com.oasis.springboot.dto.plant.PlantsResponseDto;
 import com.oasis.springboot.common.response.ListResponse;
 import com.oasis.springboot.common.response.ResponseService;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
-@Tag(name = "Plant", description = "Plant 등록, 전체 Plants 조회 API -> 삭제는 일단 하지말아보샘")
+@Tag(name = "Plant")
 @RequiredArgsConstructor
 @RequestMapping("/api/plants")
 @RestController
@@ -57,5 +58,11 @@ public class PlantController {
     public SingleResponse<String> deletePlant(@PathVariable Long plantId) {
 
         return responseService.getSingleResponse(plantService.deletePlant(plantId));
+    }
+
+    @Operation(description = "식물 디테일", security = { @SecurityRequirement(name = "bearer-key") })
+    @GetMapping("/{plantId}")
+    public SingleResponse<PlantDetailResponseDto> getPlantDetail(@PathVariable Long plantId){
+        return responseService.getSingleResponse(plantService.getPlantDetail(plantId));
     }
 }

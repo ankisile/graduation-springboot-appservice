@@ -25,7 +25,6 @@ public class GardenController {
         return responseService.getListResponse(gardenService.getGardenList());
     }
 
-
     @Operation(security = { @SecurityRequirement(name = "bearer-key") }, summary = "식물도감 디테일")
     @GetMapping("/{gardenId}")
     public SingleResponse<GardenDetailResponseDto> getGardenDetail(@PathVariable Long gardenId){

@@ -62,6 +62,7 @@ public class PlantService {
                 .type(CareType.ADOPTING)
                 .plantName(requestDto.getName())
                 .user(user)
+                .plant(plant)
                 .build();
         calendarRepository.save(calendar);
 
@@ -77,12 +78,35 @@ public class PlantService {
     }
 
     @Transactional
-    public void deletePlant(Long plantId){
+    public String deletePlant(Long plantId){
         List<Journal> journalList = journalRepository.findJournalsByPlantIdFetchJoin(plantId);
+
+        for(Journal journal : journalList){
+            if(journal.getPicture() != null) {
+                String str = journal.getPicture();
+                String path = str.substring(62, str.length());
+                s3Uploader.delete(path);
+            }
+            journalRepository.delete(journal);
+        }
+
+        List<Calendar> calendarList = calendarRepository.findAllByPlantId(plantId);
+
+        for(Calendar calendar : calendarList){
+            calendarRepository.delete(calendar);
+        }
 
         Plant plant = plantRepository.findById(plantId)
                         .orElseThrow(InvalidatePlantException::new);
 
-//        plantRepository.delete(plant);
+        plantRepository.delete(plant);
+
+
+        return "식물 삭제 성공";
     }
+
+    //식물 상세
+
+    //식물 수정
+
 }

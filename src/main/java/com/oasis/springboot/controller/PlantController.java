@@ -42,7 +42,7 @@ public class PlantController {
             )
             @RequestPart("key") String requestDto,
             @Parameter(name = "file", description = "사진(maxSize: 10MB)")
-            @RequestPart(value = "file", required = false) MultipartFile multipartFile ) {
+            @RequestPart(value = "file") MultipartFile multipartFile ) {
         return responseService.getSingleResponse(plantService.savePlant(requestDto, multipartFile));
     }
 
@@ -54,7 +54,8 @@ public class PlantController {
 
     @Operation(security = { @SecurityRequirement(name = "bearer-key") })
     @DeleteMapping("/{plantId}")
-    public void deletePlant(@PathVariable Long plantId) {
-        plantService.deletePlant(plantId);
+    public SingleResponse<String> deletePlant(@PathVariable Long plantId) {
+
+        return responseService.getSingleResponse(plantService.deletePlant(plantId));
     }
 }

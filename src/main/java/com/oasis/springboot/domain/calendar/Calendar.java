@@ -34,18 +34,17 @@ public class Calendar extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-//    @Column
-//    private Long plantId;
-//
-//    @Column
-//    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "plant_id")
+    private Plant plant;
 
     @Builder
-    public Calendar(CareType type, String plantName, User user) {
+    public Calendar(CareType type, String plantName, User user, Plant plant) {
         this.date = LocalDate.now();
         this.type = type;
         this.plantName = plantName;
         this.user = user;
+        this.plant = plant;
 //        this.plantId = plant.getId();
 //        this.userId = user.getId();
     }

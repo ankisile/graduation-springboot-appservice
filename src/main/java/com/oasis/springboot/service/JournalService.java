@@ -1,6 +1,7 @@
 package com.oasis.springboot.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.oasis.springboot.common.exception.InvalidatePlantException;
 import com.oasis.springboot.domain.journal.Journal;
 import com.oasis.springboot.domain.journal.JournalRepository;
 import com.oasis.springboot.domain.plant.Plant;
@@ -37,7 +38,7 @@ public class JournalService {
 
         try {
             if(file!=null) {
-                String s3Url = s3Uploader.upload(file, "static");
+                String s3Url = s3Uploader.upload(file, "journal");
                 requestDto.setPicture(s3Url);
             }
         } catch (IOException e) {
@@ -45,7 +46,7 @@ public class JournalService {
         }
 
         Plant plant = plantRepository.findById(plantId)
-                .orElseThrow(()->new IllegalArgumentException("해당 식물이 없습니다. id = "+ plantId));
+                .orElseThrow(InvalidatePlantException::new);
 
         Long journalId = journalRepository.save(requestDto.toEntity(plant)).getId();
         Journal journal = journalRepository.findById(journalId)
@@ -61,4 +62,15 @@ public class JournalService {
                 .collect(Collectors.toList());
     }
 
+    public String deleteJournal(Long journalId){
+        Journal journal = journalRepository.findById(journalId)
+                .orElseThrow(()->new IllegalArgumentException("해당 일지가 없습니다. id = "+ journalId));
+        if(journal.getPicture() != null) {
+            String str = journal.getPicture();
+            String path = str.substring(62, str.length());
+            s3Uploader.delete(path);
+        }
+        journalRepository.delete(journal);
+        return "식물 일지 삭제 성공";
+    }
 }

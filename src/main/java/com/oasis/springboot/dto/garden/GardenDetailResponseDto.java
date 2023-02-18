@@ -16,8 +16,9 @@ public class GardenDetailResponseDto {
     private String light;
     private String place;
     private String bug;
+    private boolean isBookmark;
 
-    public GardenDetailResponseDto(Garden garden) {
+    public GardenDetailResponseDto(Garden garden, boolean isBookmark) {
         this.id = garden.getId();
         this.name = garden.getName();
         this.picture = garden.getPicture();
@@ -29,5 +30,6 @@ public class GardenDetailResponseDto {
         this.light = garden.getLight();
         this.place = garden.getPlace();
         this.bug = garden.getBug();
+        this.isBookmark = isBookmark;
     }
 }

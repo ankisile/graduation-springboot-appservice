@@ -1,5 +1,7 @@
 package com.oasis.springboot.service;
 
+import com.oasis.springboot.common.exception.InvalidateGardenException;
+import com.oasis.springboot.domain.bookmark.BookmarkRepository;
 import com.oasis.springboot.domain.garden.GardenRepository;
 import com.oasis.springboot.dto.garden.GardenDetailResponseDto;
 import com.oasis.springboot.dto.garden.GardenListResponseDto;
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 public class GardenService {
 
     private final GardenRepository gardenRepository;
+    private final BookmarkService bookmarkService;
 
     public List<GardenListResponseDto> getGardenList(){
         return gardenRepository.findAll()
@@ -23,9 +26,10 @@ public class GardenService {
     }
 
     public GardenDetailResponseDto getDetailGarden(Long id){
+        boolean isBookmark = bookmarkService.isBookmark(id);
         return gardenRepository.findById(id)
-                .map(garden -> new GardenDetailResponseDto(garden))
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 garden 입니다. id=" + id));
+                .map(garden -> new GardenDetailResponseDto(garden, isBookmark))
+                .orElseThrow(InvalidateGardenException::new);
     }
 
     public List<GardenListResponseDto> searchGardenList(String keyword){
@@ -34,7 +38,4 @@ public class GardenService {
                 .map(GardenListResponseDto::new)
                 .collect(Collectors.toList());
     }
-
-
-    //찜
 }

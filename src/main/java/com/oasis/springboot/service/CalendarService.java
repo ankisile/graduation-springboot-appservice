@@ -1,5 +1,6 @@
 package com.oasis.springboot.service;
 
+import com.oasis.springboot.common.exception.InvalidatePlantException;
 import com.oasis.springboot.domain.calendar.Calendar;
 import com.oasis.springboot.domain.calendar.CalendarRepository;
 import com.oasis.springboot.domain.calendar.CareType;
@@ -24,7 +25,7 @@ public class CalendarService {
     public String savePlantCare(Long plantId, CareType careType) {
         User user = userService.findByEmail();
         Plant plant = plantRepository.findById(plantId)
-                .orElseThrow(()->new IllegalArgumentException("해당 식물이 없습니다. id = "+ plantId));
+                .orElseThrow(InvalidatePlantException::new);
 
         Calendar calendar = Calendar.builder()
                 .type(careType)

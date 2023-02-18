@@ -62,7 +62,7 @@ public class UserController {
             @Schema(description = "유저정보 닉네임만(String)",
                     example = "nickName"
             )
-            @RequestPart(value = "key") String nickName,
+            @RequestPart(value = "key", required = false) String nickName,
             @Parameter(name = "file", description = "사진(maxSize: 10MB), 변경되지 않으면 null 기본이미지로 바뀌어도 변경되면 파일 전달")
             @RequestPart(value = "file", required = false) MultipartFile file
     ){
@@ -74,9 +74,6 @@ public class UserController {
     public SingleResponse<String> changeUserPassword(@RequestBody PasswordDto passwordDto){
         return responseService.getSingleResponse(userService.updatePassword(passwordDto));
     }
-
-
-    //유저 북마크
 
     @ExceptionHandler(ExistUserException.class)
     public CommonResponse existUserException(ExistUserException e){

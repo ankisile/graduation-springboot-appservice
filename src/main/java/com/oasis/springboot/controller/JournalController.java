@@ -45,4 +45,10 @@ public class JournalController {
     public ListResponse<JournalsResponseDto> getJournals(@PathVariable Long plantId) {
         return responseService.getListResponse(journalService.getJournals(plantId));
     }
+
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") })
+    @DeleteMapping("/{journalId}")
+    public SingleResponse<String> deleteJournal(@PathVariable Long journalId) {
+        return responseService.getSingleResponse(journalService.deleteJournal(journalId));
+    }
 }

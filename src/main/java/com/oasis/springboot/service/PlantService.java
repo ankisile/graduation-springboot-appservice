@@ -1,9 +1,12 @@
 package com.oasis.springboot.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.oasis.springboot.common.exception.InvalidatePlantException;
 import com.oasis.springboot.domain.calendar.Calendar;
 import com.oasis.springboot.domain.calendar.CalendarRepository;
 import com.oasis.springboot.domain.calendar.CareType;
+import com.oasis.springboot.domain.journal.Journal;
+import com.oasis.springboot.domain.journal.JournalRepository;
 import com.oasis.springboot.domain.plant.Plant;
 import com.oasis.springboot.domain.plant.PlantRepository;
 import com.oasis.springboot.domain.user.User;
@@ -25,6 +28,7 @@ public class PlantService {
 
     private final PlantRepository plantRepository;
     private final CalendarRepository calendarRepository;
+    private final JournalRepository journalRepository;
     private final UserService userService;
     private final S3Uploader s3Uploader;
 
@@ -41,7 +45,7 @@ public class PlantService {
 
         try {
             if(file!=null) {
-                String s3Url = s3Uploader.upload(file, "static");
+                String s3Url = s3Uploader.upload(file, "plant");
                 requestDto.setPicture(s3Url);
             }
         } catch (IOException e) {
@@ -74,9 +78,11 @@ public class PlantService {
 
     @Transactional
     public void deletePlant(Long plantId){
-        //일지 삭제도 필요
+        List<Journal> journalList = journalRepository.findJournalsByPlantIdFetchJoin(plantId);
+
         Plant plant = plantRepository.findById(plantId)
-                        .orElseThrow(()->new IllegalArgumentException("해당 식물이 없습니다. id = "+ plantId));
-        plantRepository.delete(plant);
+                        .orElseThrow(InvalidatePlantException::new);
+
+//        plantRepository.delete(plant);
     }
 }

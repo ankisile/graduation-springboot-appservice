@@ -37,7 +37,4 @@ public class GardenController {
     public ListResponse<GardenListResponseDto> searchGarden(@RequestParam String keyword){
         return responseService.getListResponse(gardenService.searchGardenList(keyword));
     }
-
-    //찜
-
 }

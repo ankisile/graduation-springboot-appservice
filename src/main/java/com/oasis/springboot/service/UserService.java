@@ -46,7 +46,7 @@ public class UserService {
         String s3Url = "https://graduationplantbucket.s3.ap-northeast-2.amazonaws.com/static/flower-pot.png";
         try {
             if(file != null)
-                s3Url = s3Uploader.upload(file, "static");
+                s3Url = s3Uploader.upload(file, "user");
         } catch (IOException e) {
             e.printStackTrace();
         }

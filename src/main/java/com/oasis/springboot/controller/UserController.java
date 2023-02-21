@@ -62,11 +62,13 @@ public class UserController {
             @Schema(description = "유저정보 닉네임만(String)",
                     example = "nickName"
             )
-            @RequestPart(value = "key", required = false) String nickName,
-            @Parameter(name = "file", description = "사진(maxSize: 10MB), 변경되지 않으면 null 기본이미지로 바뀌어도 변경되면 파일 전달")
+            @RequestPart(value = "name", required = false) String nickName,
+            @Schema(description = "사진 변경 여부. boolean인데 string으로 전달 바람 true false 이런식으로")
+            @RequestPart(value = "change") String isChange,
+            @Parameter(name = "file", description = "사진(maxSize: 10MB), 변경되지 않으면 null 기본이미지로 바뀔때는 boolean 값만 전달 사진은 null")
             @RequestPart(value = "file", required = false) MultipartFile file
     ){
-        return responseService.getSingleResponse(userService.updateUserInfo(nickName, file));
+        return responseService.getSingleResponse(userService.updateUserInfo(nickName, Boolean.parseBoolean(isChange), file));
     }
 
     @Operation(security = { @SecurityRequirement(name = "bearer-key") }, summary = "비밀번호 변경")

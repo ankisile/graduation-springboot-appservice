@@ -14,6 +14,7 @@ import com.oasis.springboot.dto.UserMainResponseDto;
 import com.oasis.springboot.common.handler.S3Uploader;
 import com.oasis.springboot.common.jwt.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,9 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final S3Uploader s3Uploader;
 
+    @Value("${user.default.image}")
+    private String defaultImg;
+
     @Transactional
     public String signup(String string, MultipartFile file) {
         ObjectMapper mapper = new ObjectMapper();
@@ -43,10 +47,10 @@ public class UserService {
             throw new ExistUserException();
         }
 
-        String s3Url = "https://graduationplantbucket.s3.ap-northeast-2.amazonaws.com/static/flower-pot.png";
+        String s3Url = defaultImg;
         try {
             if(file != null)
-                s3Url = s3Uploader.upload(file, "user");
+                s3Url = s3Uploader.upload(file, "static");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -92,19 +96,22 @@ public class UserService {
     }
 
     @Transactional
-    public String updateUserInfo(String nickName, MultipartFile file){
+    public String updateUserInfo(String nickName, Boolean isChange, MultipartFile file) {
         User user = findByEmail();
         System.out.print(nickName);
         if(nickName != null)
             user.modifyNickName(nickName);
 
-        try {
-            if(file != null){
-                String s3Url = s3Uploader.upload(file, "static");
-                user.modifyPicture(s3Url);
+        if(isChange) {
+            String s3Url = defaultImg;
+            try{
+                if (file != null) {
+                    s3Url = s3Uploader.upload(file, "static");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            user.modifyPicture(s3Url);
         }
         return "success";
     }

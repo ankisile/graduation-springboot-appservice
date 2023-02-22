@@ -15,6 +15,7 @@ import com.oasis.springboot.dto.plant.PlantSaveRequestDto;
 import com.oasis.springboot.dto.plant.PlantsResponseDto;
 import com.oasis.springboot.common.handler.S3Uploader;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,7 +48,7 @@ public class PlantService {
         try {
             if(file!=null) {
                 String s3Url = s3Uploader.upload(file, "plant");
-                requestDto.setPicture(s3Url);
+                requestDto.setPicture(s3Url.substring(62));
             }
         } catch (IOException e) {
             e.printStackTrace();

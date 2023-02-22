@@ -67,7 +67,7 @@ public class JournalService {
                 .orElseThrow(()->new IllegalArgumentException("해당 일지가 없습니다. id = "+ journalId));
         if(journal.getPicture() != null) {
             String str = journal.getPicture();
-            String path = str.substring(62, str.length());
+            String path = str.substring(62);
             s3Uploader.delete(path);
         }
         journalRepository.delete(journal);

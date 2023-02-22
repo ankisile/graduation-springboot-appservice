@@ -1,7 +1,7 @@
 package com.oasis.springboot.service;
 
-import org.json.JSONObject;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import java.time.format.DateTimeFormatter;
 @Service
 public class WeatherService {
 
-    public JSONArray getWeather(String x, String y) throws IOException, ParseException {
+    public JSONArray getWeather(String x, String y) throws IOException, ParseException, ParseException {
         String apiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst";
 
         String serviceKey = "UdJoe0RU%2BfA4noQhiQupw5F43s9H%2BGaTyKVFX9guM4wsuoWR9SWXPtQ4pHzWpcOpP%2FBo6enHnmibSfN55xy7tQ%3D%3D";

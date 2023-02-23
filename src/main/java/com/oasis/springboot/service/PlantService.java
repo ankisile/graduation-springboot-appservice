@@ -9,18 +9,20 @@ import com.oasis.springboot.domain.journal.Journal;
 import com.oasis.springboot.domain.journal.JournalRepository;
 import com.oasis.springboot.domain.plant.Plant;
 import com.oasis.springboot.domain.plant.PlantRepository;
+import com.oasis.springboot.domain.pushAlarm.PushAlarm;
+import com.oasis.springboot.domain.pushAlarm.PushAlarmRepository;
 import com.oasis.springboot.domain.user.User;
 import com.oasis.springboot.dto.plant.PlantDetailResponseDto;
 import com.oasis.springboot.dto.plant.PlantSaveRequestDto;
 import com.oasis.springboot.dto.plant.PlantsResponseDto;
 import com.oasis.springboot.common.handler.S3Uploader;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +33,7 @@ public class PlantService {
     private final PlantRepository plantRepository;
     private final CalendarRepository calendarRepository;
     private final JournalRepository journalRepository;
+    private final PushAlarmRepository pushAlarmRepository;
     private final UserService userService;
     private final S3Uploader s3Uploader;
 
@@ -54,7 +57,7 @@ public class PlantService {
             e.printStackTrace();
         }
 
-        User user = userService.findByEmail();
+        User user = userService.findUser();
         System.out.print(user);
 
         Plant plant = requestDto.toEntity(user);
@@ -67,6 +70,13 @@ public class PlantService {
                 .plant(plant)
                 .build();
         calendarRepository.save(calendar);
+
+        PushAlarm pushAlarm = PushAlarm.builder()
+                .date(LocalDate.now().plusDays(requestDto.getWaterAlarmInterval()))
+                .plant(plant)
+                .user(user)
+                .build();
+        pushAlarmRepository.save(pushAlarm);
 
         return "식물 등록 성공";
     }
@@ -103,6 +113,10 @@ public class PlantService {
 
         plantRepository.delete(plant);
 
+        List<PushAlarm> pushAlarmList = pushAlarmRepository.findAllByPlantId(plantId);
+        for(PushAlarm pushAlarm : pushAlarmList){
+            pushAlarmRepository.delete(pushAlarm);
+        }
 
         return "식물 삭제 성공";
     }

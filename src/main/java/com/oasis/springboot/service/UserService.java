@@ -82,11 +82,16 @@ public class UserService {
                 .orElseThrow(InvalidateUserException::new);
     }
 
-    public User findByEmail(){
+    public User findUser(){
         String email = findCurrentUserEmail();
         return userRepository.findByEmail(email).orElseThrow(InvalidateUserException::new);
 
     }
+
+    public User findByEmail(String email){
+        return userRepository.findByEmail(email).orElseThrow(InvalidateUserException::new);
+    }
+
 
     public Long findUserId(){
         String email = findCurrentUserEmail();
@@ -97,7 +102,7 @@ public class UserService {
 
     @Transactional
     public String updateUserInfo(String nickName, Boolean isChange, MultipartFile file) {
-        User user = findByEmail();
+        User user = findUser();
         System.out.print(nickName);
         if(nickName != null)
             user.modifyNickName(nickName);
@@ -118,7 +123,7 @@ public class UserService {
 
     @Transactional
     public String updatePassword(PasswordDto passwordDto){
-        User user = findByEmail();
+        User user = findUser();
         if(!passwordEncoder.matches(passwordDto.getCurrentPW(), user.getPassword()))
             throw new NotMatchPasswordException();
         String newPw = passwordEncoder.encode(passwordDto.getNewPW());

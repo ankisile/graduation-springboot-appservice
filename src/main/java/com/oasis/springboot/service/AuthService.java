@@ -32,7 +32,7 @@ public class AuthService {
         // authentication 을 기준으로 jwt token 생성
         String jwt = tokenProvider.createToken(authentication);
 
-        User user = userService.findByEmail();
+        User user = userService.findByEmail(loginDto.getEmail());
         user.updateFcmToken(loginDto.getFcmToken());
 
         return new TokenResponseDto(jwt);

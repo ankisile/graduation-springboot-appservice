@@ -6,7 +6,6 @@ import com.oasis.springboot.domain.bookmark.BookmarkRepository;
 import com.oasis.springboot.domain.garden.Garden;
 import com.oasis.springboot.domain.garden.GardenRepository;
 import com.oasis.springboot.domain.user.User;
-import com.oasis.springboot.domain.user.UserRepository;
 import com.oasis.springboot.dto.garden.GardenListResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,7 +31,7 @@ public class BookmarkService {
         Optional<Bookmark> optionalBookmark = bookmarkRepository.findBookmarkByUserIdAndGardenId(userId, gardenId);
 
         if(optionalBookmark.isEmpty()){
-            User user = userService.findByEmail();
+            User user = userService.findUser();
             Garden garden = gardenRepository.findById(gardenId).orElseThrow(InvalidateGardenException::new);
 
             Bookmark bookmark = Bookmark.builder()

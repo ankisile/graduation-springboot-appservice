@@ -6,11 +6,13 @@ import com.oasis.springboot.domain.calendar.CalendarRepository;
 import com.oasis.springboot.domain.calendar.CareType;
 import com.oasis.springboot.domain.plant.Plant;
 import com.oasis.springboot.domain.plant.PlantRepository;
+import com.oasis.springboot.domain.pushAlarm.PushAlarm;
 import com.oasis.springboot.domain.user.User;
 import com.oasis.springboot.dto.calendar.CalendarListResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +25,7 @@ public class CalendarService {
     private final UserService userService;
 
     public String savePlantCare(Long plantId, CareType careType) {
-        User user = userService.findByEmail();
+        User user = userService.findUser();
         Plant plant = plantRepository.findById(plantId)
                 .orElseThrow(InvalidatePlantException::new);
 
@@ -36,6 +38,13 @@ public class CalendarService {
 
         calendarRepository.save(calendar);
 
+        if(careType == CareType.WATER){
+            PushAlarm pushAlarm = PushAlarm.builder()
+                    .date(LocalDate.now().plusDays(plant.getWaterAlarmInterval()))
+                    .user(user)
+                    .plant(plant)
+                    .build();
+        }
         return "등록 성공";
     }
 

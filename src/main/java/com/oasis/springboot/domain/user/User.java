@@ -32,6 +32,9 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private Role role;
 
+    @Column
+    private String fcmToken;
+
     @Builder
     public User (String name, String email, String password, String picture, Role role) {
         this.name = name;
@@ -51,4 +54,7 @@ public class User extends BaseTimeEntity {
 
     public void modifyPassword(String password) { this.password = password; }
 
+    public void updateFcmToken(String fcmToken){
+        this.fcmToken = fcmToken;
+    }
 }

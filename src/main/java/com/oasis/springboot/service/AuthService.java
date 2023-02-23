@@ -1,5 +1,6 @@
 package com.oasis.springboot.service;
 
+import com.oasis.springboot.domain.user.User;
 import com.oasis.springboot.dto.LoginDto;
 import com.oasis.springboot.dto.TokenResponseDto;
 import com.oasis.springboot.common.jwt.JwtTokenProvider;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthService {
     private final JwtTokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final UserService userService;
 
     public TokenResponseDto login(LoginDto loginDto) {
 
@@ -29,6 +31,9 @@ public class AuthService {
 
         // authentication 을 기준으로 jwt token 생성
         String jwt = tokenProvider.createToken(authentication);
+
+        User user = userService.findByEmail();
+        user.updateFcmToken(loginDto.getFcmToken());
 
         return new TokenResponseDto(jwt);
     }

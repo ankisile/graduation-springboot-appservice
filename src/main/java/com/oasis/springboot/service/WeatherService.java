@@ -31,8 +31,10 @@ public class WeatherService {
         String baseTime = String.format("%02d", LocalTime.now().getHour())+"30";
         if(LocalTime.now().getMinute()<30) {
             baseTime =  String.format("%02d", LocalTime.now().getHour() - 1) + "30";
-            if(LocalTime.now().getHour() == 0)
+            if(LocalTime.now().getHour() == 0) {
+                baseDate = LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
                 baseTime = "2330";
+            }
         }
 
         String dataType = "json";

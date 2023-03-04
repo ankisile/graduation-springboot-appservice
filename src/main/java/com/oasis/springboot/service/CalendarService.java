@@ -7,6 +7,7 @@ import com.oasis.springboot.domain.calendar.CareType;
 import com.oasis.springboot.domain.plant.Plant;
 import com.oasis.springboot.domain.plant.PlantRepository;
 import com.oasis.springboot.domain.pushAlarm.PushAlarm;
+import com.oasis.springboot.domain.pushAlarm.PushAlarmRepository;
 import com.oasis.springboot.domain.user.User;
 import com.oasis.springboot.dto.calendar.CalendarListResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class CalendarService {
     private final CalendarRepository calendarRepository;
     private final PlantRepository plantRepository;
     private final UserService userService;
+    private final PushAlarmRepository pushAlarmRepository;
 
     public String savePlantCare(Long plantId, CareType careType) {
         User user = userService.findUser();
@@ -44,6 +46,8 @@ public class CalendarService {
                     .user(user)
                     .plant(plant)
                     .build();
+
+            pushAlarmRepository.save(pushAlarm);
         }
         return "등록 성공";
     }

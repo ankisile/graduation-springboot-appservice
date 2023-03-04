@@ -1,6 +1,7 @@
 package com.oasis.springboot.service;
 
 import com.oasis.springboot.domain.user.User;
+import com.oasis.springboot.domain.user.UserRepository;
 import com.oasis.springboot.dto.LoginDto;
 import com.oasis.springboot.dto.TokenResponseDto;
 import com.oasis.springboot.common.jwt.JwtTokenProvider;
@@ -18,6 +19,7 @@ public class AuthService {
     private final JwtTokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final UserService userService;
+    private final UserRepository userRepository;
 
     public TokenResponseDto login(LoginDto loginDto) {
 
@@ -32,10 +34,13 @@ public class AuthService {
         // authentication 을 기준으로 jwt token 생성
         String jwt = tokenProvider.createToken(authentication);
 
-        User user = userService.findByEmail(loginDto.getEmail());
-        user.updateFcmToken(loginDto.getFcmToken());
-
         return new TokenResponseDto(jwt);
     }
 
+    @Transactional
+    public void updateFcmToken(LoginDto loginDto){
+        User user = userService.findByEmail(loginDto.getEmail());
+        user.setFcmToken(loginDto.getFcmToken());
+        userRepository.save(user); // 영속성을 안가지므로
+    }
 }

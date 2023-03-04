@@ -32,6 +32,7 @@ public class AuthController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + tokenResponseDto.getToken());
 
+        authService.updateFcmToken(loginDto);
         // 2. Response Body에 token 값을 넣어준다.
         return new ResponseEntity<>(tokenResponseDto, httpHeaders, HttpStatus.OK);
     }

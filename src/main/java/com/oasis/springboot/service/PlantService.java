@@ -51,7 +51,7 @@ public class PlantService {
         try {
             if(file!=null) {
                 String s3Url = s3Uploader.upload(file, "plant");
-                requestDto.setPicture(s3Url.substring(62));
+                requestDto.setPicture(s3Url);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -108,15 +108,16 @@ public class PlantService {
             calendarRepository.delete(calendar);
         }
 
-        Plant plant = plantRepository.findById(plantId)
-                        .orElseThrow(InvalidatePlantException::new);
-
-        plantRepository.delete(plant);
-
         List<PushAlarm> pushAlarmList = pushAlarmRepository.findAllByPlantId(plantId);
         for(PushAlarm pushAlarm : pushAlarmList){
             pushAlarmRepository.delete(pushAlarm);
         }
+
+
+        Plant plant = plantRepository.findById(plantId)
+                        .orElseThrow(InvalidatePlantException::new);
+
+        plantRepository.delete(plant);
 
         return "식물 삭제 성공";
     }
@@ -127,6 +128,18 @@ public class PlantService {
         return new PlantDetailResponseDto(plant);
     }
 
-    //식물 수정
+    @Transactional
+    public String makeStar(Long plantId){
+        Plant plant = plantRepository.findById(plantId)
+                .orElseThrow(InvalidatePlantException::new);
+        if(plant.getStar()){
+            plant.updatePlantStar(false);
+            return "대표 식물 취소 완료";
+        }
+        else {
+            plant.updatePlantStar(true);
+            return "대표 식물 성공 완료";
+        }
+    }
 
 }

@@ -65,4 +65,10 @@ public class PlantController {
     public SingleResponse<PlantDetailResponseDto> getPlantDetail(@PathVariable Long plantId){
         return responseService.getSingleResponse(plantService.getPlantDetail(plantId));
     }
+
+    @Operation(summary = "대표 식물등록", security = { @SecurityRequirement(name = "bearer-key") })
+    @PatchMapping("/star/{plantId}")
+    public SingleResponse<String> makeStar(@PathVariable Long plantId){
+        return responseService.getSingleResponse(plantService.makeStar(plantId));
+    }
 }

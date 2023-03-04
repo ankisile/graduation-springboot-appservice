@@ -17,6 +17,7 @@ public class PlantsResponseDto {
     private String picture;
     private Long DDay;
     private String recentRecordDate;
+    private Boolean star;
 
     public PlantsResponseDto(Plant plant) {
         this.id = plant.getId();
@@ -24,5 +25,6 @@ public class PlantsResponseDto {
         this.picture = plant.getPicture();
         this.DDay = ChronoUnit.DAYS.between(plant.getAdoptingDate(), LocalDateTime.now());
         this.recentRecordDate = plant.getRecentRecordDate().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        this.star = plant.getStar();
     }
 }

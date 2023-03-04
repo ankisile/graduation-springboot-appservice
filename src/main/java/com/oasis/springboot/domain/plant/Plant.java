@@ -45,6 +45,8 @@ public class Plant extends BaseTimeEntity {
     @Column
     private LocalDate recentRecordDate;
 
+    private Boolean star;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -61,10 +63,15 @@ public class Plant extends BaseTimeEntity {
         this.lowTemperature = lowTemperature;
         this.recentRecordDate = LocalDate.now();
         this.user = user;
+        this.star = false;
     }
 
     public void updateRecentRecordDate(LocalDate date){
         this.recentRecordDate = date;
+    }
+
+    public void updatePlantStar(Boolean star){
+        this.star = star;
     }
 
 }

@@ -11,7 +11,10 @@ import com.oasis.springboot.dto.UserMainResponseDto;
 import com.oasis.springboot.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +34,11 @@ public class UserController {
     private final ResponseService responseService;
 
     @Operation(summary = "회원가입", description = "form-data 형식으로 전달 필요")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "successful operation"),
+            @ApiResponse(responseCode = "1002", description = "Exist User", content = @Content(schema = @Schema(implementation = CommonResponse.class))),
+            @ApiResponse(responseCode = "1003", description = "Password Not Match", content = @Content(schema = @Schema(implementation = CommonResponse.class)))
+    })
     @PostMapping(value = "/signup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> signup(
             @Schema(name = "RegisterDto",

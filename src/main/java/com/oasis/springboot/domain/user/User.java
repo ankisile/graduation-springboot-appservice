@@ -17,7 +17,7 @@ public class User extends BaseTimeEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String nickName;
 
     @Column(nullable = false)
     private String email;
@@ -36,8 +36,8 @@ public class User extends BaseTimeEntity {
     private String fcmToken;
 
     @Builder
-    public User (String name, String email, String password, String picture, Role role) {
-        this.name = name;
+    public User (String nickName, String email, String password, String picture, Role role) {
+        this.nickName = nickName;
         this.email = email;
         this.password = password;
         this.picture = picture;
@@ -45,7 +45,7 @@ public class User extends BaseTimeEntity {
     }
 
     public void modifyNickName(String nickName){
-        this.name = nickName;
+        this.nickName = nickName;
     }
 
     public void modifyPicture(String picture){

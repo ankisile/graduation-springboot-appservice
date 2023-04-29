@@ -11,7 +11,8 @@ public enum Exception {
     EXIST_USER(1002, "이미 가입된 유저입니다."),
     NOT_MATCH_PASSWORD(1003, "비밀번호가 일치하지 않습니다."),
     INVALIDATE_PLANT(1004, "해당하는 식물이 존재하지 않습니다."),
-    INVALIDATE_GARDEN(1005, "해당하는 식물도감이 존재하지 않습니다.");
+    INVALIDATE_GARDEN(1005, "해당하는 식물도감이 존재하지 않습니다."),
+    FILE_UPLOAD_FAIL(1006, "파일 업로드에 실패했습니다.");
 
     private final int code;
     private final String message;

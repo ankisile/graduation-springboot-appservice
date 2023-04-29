@@ -108,13 +108,13 @@ public class FcmService {
         sendMessage(msg);
     }
 
-    @Scheduled(cron = "0 00 10 * * ?")
+    @Scheduled(cron = "0 00 11 * * ?")
     public void pushWaterNotification() throws FirebaseMessagingException {
         List<PushAlarm> pushAlarmList = pushAlarmRepository.findAllByDate(LocalDate.now());
         for(PushAlarm pushAlarm : pushAlarmList){
             String token = pushAlarm.getUser().getFcmToken();
             String title = "오늘은 물 주는 날~🎍";
-            String body = pushAlarm.getUser().getName()+"님. 물이 필요한 식물이 있어요. 물 주러 가볼까요~?";
+            String body = pushAlarm.getUser().getNickName()+"님. 물이 필요한 식물이 있어요. 물 주러 가볼까요~?";
 
             sendTokenMessage(token, title, body);
             pushAlarmRepository.delete(pushAlarm);

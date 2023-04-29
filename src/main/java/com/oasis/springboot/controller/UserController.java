@@ -2,11 +2,13 @@ package com.oasis.springboot.controller;
 
 import com.oasis.springboot.common.exception.Exception;
 import com.oasis.springboot.common.exception.ExistUserException;
+import com.oasis.springboot.common.exception.FileUploadFailException;
 import com.oasis.springboot.common.exception.NotMatchPasswordException;
 import com.oasis.springboot.common.response.CommonResponse;
 import com.oasis.springboot.common.response.ResponseService;
 import com.oasis.springboot.common.response.SingleResponse;
 import com.oasis.springboot.dto.PasswordDto;
+import com.oasis.springboot.dto.SignUpRequestDto;
 import com.oasis.springboot.dto.UserMainResponseDto;
 import com.oasis.springboot.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,6 +25,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+
 
 @Tag(name = "유저 회원가입", description = "")
 @RestController
@@ -36,26 +40,11 @@ public class UserController {
     @Operation(summary = "회원가입", description = "form-data 형식으로 전달 필요")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "successful operation"),
-            @ApiResponse(responseCode = "1002", description = "Exist User", content = @Content(schema = @Schema(implementation = CommonResponse.class))),
-            @ApiResponse(responseCode = "1003", description = "Password Not Match", content = @Content(schema = @Schema(implementation = CommonResponse.class)))
+            @ApiResponse(responseCode = "1002", description = "Exist User", content = @Content(schema = @Schema(implementation = CommonResponse.class)))
     })
     @PostMapping(value = "/signup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> signup(
-            @Schema(name = "RegisterDto",
-                    description = "회원가입(String 이지만 json)",
-                    required = true,
-                    example = "{\n" +
-                            "    \"email\":\"string@(이메일 주소)\",\n" +
-                            "    \"password\":\"string@(비번)\",\n" +
-                            "    \"nickName\":\"string@\"\n" +
-                            "}"
-            )
-            @RequestPart(value = "key") String requestDto,
-
-            @Parameter(name = "file", description = "사진(maxSize: 10MB)")
-            @RequestPart(value = "file", required = false) MultipartFile file) {
-
-        return ResponseEntity.ok(userService.signup(requestDto, file));
+    public SingleResponse<Long> signup(@ModelAttribute @Valid SignUpRequestDto signUpRequestDto) {
+        return responseService.getSingleResponse(userService.signup(signUpRequestDto));
     }
 
     @Operation(security = { @SecurityRequirement(name = "bearer-key") }, summary = "정보 불러오기")
@@ -80,6 +69,10 @@ public class UserController {
     }
 
     @Operation(security = { @SecurityRequirement(name = "bearer-key") }, summary = "비밀번호 변경")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "successful operation"),
+            @ApiResponse(responseCode = "1003", description = "Password Not Match", content = @Content(schema = @Schema(implementation = CommonResponse.class)))
+    })
     @PatchMapping(value ="/user/changepw")
     public SingleResponse<String> changeUserPassword(@RequestBody PasswordDto passwordDto){
         return responseService.getSingleResponse(userService.updatePassword(passwordDto));
@@ -94,4 +87,11 @@ public class UserController {
     public CommonResponse notMatchPasswordException(NotMatchPasswordException e){
         return responseService.getErrorResponse(Exception.NOT_MATCH_PASSWORD.getCode(), Exception.NOT_MATCH_PASSWORD.getMessage());
     }
+
+    @ExceptionHandler(FileUploadFailException.class)
+    public CommonResponse fileUploadFailException(FileUploadFailException e){
+        return responseService.getErrorResponse(Exception.FILE_UPLOAD_FAIL.getCode(), Exception.FILE_UPLOAD_FAIL.getMessage());
+    }
+
+
 }

@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.oasis.springboot.common.exception.FileUploadFailException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +25,9 @@ public class S3Uploader {
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
+
+    @Value("${user.default.image}")
+    private String defaultImg;
 
     public String upload(MultipartFile multipartFile, String dirName) throws IOException {
         File uploadFile = convert(multipartFile)
@@ -67,5 +71,18 @@ public class S3Uploader {
     public String delete(String filePath){
         amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, filePath));
         return "delete Success";
+    }
+
+    public String getFileS3Url(MultipartFile file){
+        String s3Url = defaultImg;
+        try {
+            if(file != null)
+                s3Url = upload(file, "static");
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new FileUploadFailException();
+        }
+
+        return s3Url;
     }
 }

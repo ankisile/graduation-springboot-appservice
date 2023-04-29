@@ -1,6 +1,5 @@
 package com.oasis.springboot.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oasis.springboot.common.exception.EmptyAuthenticationException;
 import com.oasis.springboot.common.exception.ExistUserException;
 import com.oasis.springboot.common.exception.InvalidateUserException;
@@ -9,18 +8,16 @@ import com.oasis.springboot.domain.user.Role;
 import com.oasis.springboot.domain.user.User;
 import com.oasis.springboot.domain.user.UserRepository;
 import com.oasis.springboot.dto.PasswordDto;
-import com.oasis.springboot.dto.RegisterDto;
+import com.oasis.springboot.dto.SignUpRequestDto;
 import com.oasis.springboot.dto.UserMainResponseDto;
 import com.oasis.springboot.common.handler.S3Uploader;
 import com.oasis.springboot.common.jwt.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 
 @Service
 @Transactional(readOnly = true)
@@ -30,42 +27,24 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final S3Uploader s3Uploader;
 
-    @Value("${user.default.image}")
-    private String defaultImg;
-
     @Transactional
-    public String signup(String string, MultipartFile file) {
-        ObjectMapper mapper = new ObjectMapper();
-        RegisterDto requestDto = null;
-        try {
-            requestDto = mapper.readValue(string, RegisterDto.class);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+    public long signup(SignUpRequestDto signUpRequestDto){
+        String email = signUpRequestDto.getEmail();
+        checkDuplicateEmail(email);
 
-        if (userRepository.findByEmail(requestDto.getEmail()).orElse(null) != null) {
-            throw new ExistUserException();
-        }
-
-        String s3Url = defaultImg;
-        try {
-            if(file != null)
-                s3Url = s3Uploader.upload(file, "static");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String fileUrl = s3Uploader.getFileS3Url(signUpRequestDto.getFile());
 
         User user = User.builder()
-                .email(requestDto.getEmail())
-                .password(passwordEncoder.encode(requestDto.getPassword()))
-                .name(requestDto.getNickName())
-                .picture(s3Url)
+                .email(email)
+                .password(passwordEncoder.encode(signUpRequestDto.getPassword()))
+                .nickName(signUpRequestDto.getNickName())
+                .picture(fileUrl)
                 .role(Role.USER)
                 .build();
 
         userRepository.save(user);
 
-        return "Success";
+        return user.getId();
     }
 
     public UserMainResponseDto findById(Long id) {
@@ -108,15 +87,9 @@ public class UserService {
             user.modifyNickName(nickName);
 
         if(isChange) {
-            String s3Url = defaultImg;
-            try{
-                if (file != null) {
-                    s3Url = s3Uploader.upload(file, "static");
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            user.modifyPicture(s3Url);
+            String fileUrl = s3Uploader.getFileS3Url(file);
+
+            user.modifyPicture(fileUrl);
         }
         return "success";
     }
@@ -131,6 +104,11 @@ public class UserService {
         return "success";
     }
 
+    private void checkDuplicateEmail(String email){
+        if(userRepository.existsByEmail(email)){
+            throw new ExistUserException();
+        }
+    }
 
     private String findCurrentUserEmail(){
         String email = SecurityUtil.getCurrentEmail()

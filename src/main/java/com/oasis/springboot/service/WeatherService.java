@@ -24,7 +24,6 @@ public class WeatherService {
 
         String serviceKey = "UdJoe0RU%2BfA4noQhiQupw5F43s9H%2BGaTyKVFX9guM4wsuoWR9SWXPtQ4pHzWpcOpP%2FBo6enHnmibSfN55xy7tQ%3D%3D";
 
-        //변경 geolocation -> 좌표
         String nx = x;
         String ny = y;
         String baseDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
@@ -36,7 +35,6 @@ public class WeatherService {
                 baseTime = "2330";
             }
         }
-
         String dataType = "json";
         String numOfRows = "250";
 

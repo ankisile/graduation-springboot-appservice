@@ -1,5 +1,7 @@
 package com.oasis.springboot.template;
 
+import com.oasis.springboot.domain.user.Role;
+import com.oasis.springboot.domain.user.User;
 import com.oasis.springboot.dto.SignUpRequestDto;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -16,12 +18,13 @@ public class UserTemplate {
         return new SignUpRequestDto(EMAIL, PASSWORD, NICKNAME, null);
     }
 
-//    public static MockMultipartFile getTestUserImage() throws Exception {
-//        String fileName = "testImage";
-//        String contentType = "png";
-//        String filePath = "src/test/resources/images/" + fileName + "." + contentType;
-//        FileInputStream fileInputStream = new FileInputStream(filePath);
-//        return new MockMultipartFile("userImage", fileName + "." + contentType, contentType, fileInputStream);
-//    }
+    public static User makeTestUser() throws Exception {
+        return User.builder()
+                .email(EMAIL)
+                .password(bCryptPasswordEncoder.encode(PASSWORD))
+                .nickName(NICKNAME)
+                .picture("imageUrl")
+                .role(Role.USER).build();
+    }
 
 }

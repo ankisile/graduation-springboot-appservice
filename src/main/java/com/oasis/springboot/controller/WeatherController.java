@@ -22,9 +22,9 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
-@Tag(name = "home", description = "메인화면 API")
+@Tag(name = "Weather", description = "메인화면 날씨 API")
 @RestController
-@RequestMapping("/api/home")
+@RequestMapping("/api/weather")
 @RequiredArgsConstructor
 public class WeatherController {
 

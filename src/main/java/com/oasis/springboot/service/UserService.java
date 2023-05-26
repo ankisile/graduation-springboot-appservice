@@ -7,16 +7,16 @@ import com.oasis.springboot.common.exception.NotMatchPasswordException;
 import com.oasis.springboot.domain.user.Role;
 import com.oasis.springboot.domain.user.User;
 import com.oasis.springboot.domain.user.UserRepository;
-import com.oasis.springboot.dto.PasswordDto;
-import com.oasis.springboot.dto.SignUpRequestDto;
-import com.oasis.springboot.dto.UserMainResponseDto;
+import com.oasis.springboot.dto.user.PasswordDto;
+import com.oasis.springboot.dto.user.SignUpRequestDto;
+import com.oasis.springboot.dto.user.UpdateUserRequestDto;
+import com.oasis.springboot.dto.user.UserMainResponseDto;
 import com.oasis.springboot.common.handler.S3Uploader;
 import com.oasis.springboot.common.jwt.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @Service
@@ -47,12 +47,6 @@ public class UserService {
         return user.getId();
     }
 
-    public UserMainResponseDto findById(Long id) {
-        return userRepository.findById(id)
-                .map(user -> new UserMainResponseDto(user))
-                .orElseThrow(InvalidateUserException::new);
-    }
-
     public UserMainResponseDto findUserInfo() {
         String email = findCurrentUserEmail();
 
@@ -80,14 +74,14 @@ public class UserService {
     }
 
     @Transactional
-    public String updateUserInfo(String nickName, Boolean isChange, MultipartFile file) {
+    public String updateUserInfo(UpdateUserRequestDto requestDto) {
         User user = findUser();
-        System.out.print(nickName);
-        if(nickName != null)
-            user.modifyNickName(nickName);
 
-        if(isChange) {
-            String fileUrl = s3Uploader.getFileS3Url(file);
+        if(requestDto.getNickName() != null)
+            user.modifyNickName(requestDto.getNickName());
+
+        if(requestDto.isFileChanged()) {
+            String fileUrl = s3Uploader.getFileS3Url(requestDto.getFile());
 
             user.modifyPicture(fileUrl);
         }

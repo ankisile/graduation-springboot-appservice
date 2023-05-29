@@ -26,8 +26,19 @@ public class S3Uploader {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    @Value("${user.default.image}")
-    private String defaultImg;
+
+    public String getFileS3Url(MultipartFile file, String dirName){
+        String s3Url;
+        try {
+            s3Url = upload(file, dirName);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new FileUploadFailException();
+        }
+
+        return s3Url;
+    }
+
 
     public String upload(MultipartFile multipartFile, String dirName) throws IOException {
         File uploadFile = convert(multipartFile)
@@ -73,16 +84,5 @@ public class S3Uploader {
         return "delete Success";
     }
 
-    public String getFileS3Url(MultipartFile file){
-        String s3Url = defaultImg;
-        try {
-            if(file != null)
-                s3Url = upload(file, "static");
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new FileUploadFailException();
-        }
 
-        return s3Url;
-    }
 }

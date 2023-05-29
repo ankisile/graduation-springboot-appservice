@@ -52,7 +52,7 @@ public class UserController {
         return responseService.getSingleResponse(userService.findUserInfo());
     }
 
-    @Operation(security = { @SecurityRequirement(name = "bearer-key") }, summary = "정보 수정", description = "form-data 형식으로 전달 필요. 사진 변경되지 않으면 null 기본이미지로 바뀔때는 boolean 값만 전달 사진은 null")
+    @Operation(security = { @SecurityRequirement(name = "bearer-key") }, summary = "정보 수정", description = "form-data 형식으로 전달 필요.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "successful operation"),
             @ApiResponse(responseCode = "1006", description = "File Upload Fail", content = @Content(schema = @Schema(implementation = CommonResponse.class)))

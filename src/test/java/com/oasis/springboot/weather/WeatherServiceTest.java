@@ -1,6 +1,7 @@
-package com.oasis.springboot.service;
+package com.oasis.springboot.weather;
 
 import com.oasis.springboot.dto.weather.WeatherDTO;
+import com.oasis.springboot.service.WeatherService;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,6 @@
 package com.oasis.springboot.service;
 
-import com.oasis.springboot.common.exception.EmptyAuthenticationException;
-import com.oasis.springboot.common.exception.ExistUserException;
-import com.oasis.springboot.common.exception.InvalidateUserException;
-import com.oasis.springboot.common.exception.NotMatchPasswordException;
+import com.oasis.springboot.common.exception.*;
 import com.oasis.springboot.domain.user.Role;
 import com.oasis.springboot.domain.user.User;
 import com.oasis.springboot.domain.user.UserRepository;
@@ -17,12 +14,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserService {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final S3Uploader s3Uploader;
@@ -32,7 +33,7 @@ public class UserService {
         String email = signUpRequestDto.getEmail();
         checkDuplicateEmail(email);
 
-        String fileUrl = s3Uploader.getFileS3Url(signUpRequestDto.getFile());
+        String fileUrl = s3Uploader.getFileS3Url(signUpRequestDto.getFile(), "static");
 
         User user = User.builder()
                 .email(email)
@@ -45,6 +46,41 @@ public class UserService {
         userRepository.save(user);
 
         return user.getId();
+    }
+
+    @Transactional
+    public String updateUserInfo(UpdateUserRequestDto requestDto) {
+        User user = findUser();
+
+        user.modifyNickName(requestDto.getNickName());
+
+        String fileUrl = s3Uploader.getFileS3Url(requestDto.getFile(), "static");
+
+        user.modifyPicture(fileUrl);
+
+        return "success";
+    }
+
+    @Transactional
+    public String updatePassword(PasswordDto passwordDto){
+        User user = findUser();
+        if(!passwordEncoder.matches(passwordDto.getCurrentPW(), user.getPassword()))
+            throw new NotMatchPasswordException();
+        String newPw = passwordEncoder.encode(passwordDto.getNewPW());
+        user.modifyPassword(newPw);
+        return "success";
+    }
+
+    private void checkDuplicateEmail(String email){
+        if(userRepository.existsByEmail(email)){
+            throw new ExistUserException();
+        }
+    }
+
+    private String findCurrentUserEmail(){
+        String email = SecurityUtil.getCurrentEmail()
+                .orElseThrow(EmptyAuthenticationException::new);
+        return email;
     }
 
     public UserMainResponseDto findUserInfo() {
@@ -72,42 +108,4 @@ public class UserService {
         User user = userRepository.findByEmail(email).orElseThrow(InvalidateUserException::new);
         return user.getId();
     }
-
-    @Transactional
-    public String updateUserInfo(UpdateUserRequestDto requestDto) {
-        User user = findUser();
-
-        if(requestDto.getNickName() != null)
-            user.modifyNickName(requestDto.getNickName());
-
-        if(requestDto.isFileChanged()) {
-            String fileUrl = s3Uploader.getFileS3Url(requestDto.getFile());
-
-            user.modifyPicture(fileUrl);
-        }
-        return "success";
-    }
-
-    @Transactional
-    public String updatePassword(PasswordDto passwordDto){
-        User user = findUser();
-        if(!passwordEncoder.matches(passwordDto.getCurrentPW(), user.getPassword()))
-            throw new NotMatchPasswordException();
-        String newPw = passwordEncoder.encode(passwordDto.getNewPW());
-        user.modifyPassword(newPw);
-        return "success";
-    }
-
-    private void checkDuplicateEmail(String email){
-        if(userRepository.existsByEmail(email)){
-            throw new ExistUserException();
-        }
-    }
-
-    private String findCurrentUserEmail(){
-        String email = SecurityUtil.getCurrentEmail()
-                .orElseThrow(EmptyAuthenticationException::new);
-        return email;
-    }
-
 }

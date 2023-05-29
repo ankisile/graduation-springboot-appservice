@@ -1,4 +1,4 @@
-package com.oasis.springboot.dto;
+package com.oasis.springboot.dto.user;
 
 import com.oasis.springboot.domain.user.User;
 import lombok.Getter;

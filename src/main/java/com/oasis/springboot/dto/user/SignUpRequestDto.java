@@ -1,4 +1,4 @@
-package com.oasis.springboot.dto;
+package com.oasis.springboot.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,5 +23,6 @@ public class SignUpRequestDto {
     @NotBlank(message = "닉네임이 없습니다.")
     private String nickName;
 
+    @NotBlank(message = "파일이 없습니다.")
     private MultipartFile file;
 }

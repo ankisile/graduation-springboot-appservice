@@ -1,1 +1,24 @@
+## 반려식물 관리 앱 PlanT
+![제목을 입력해주세요_-001](https://user-images.githubusercontent.com/53250432/235400210-86721d50-0423-4315-b4ae-386532caa3da.png)
+> 졸업작품
+- [깃허브](https://github.com/ankisile/graduation-springboot-appservice)
+- [데모시연영상](https://drive.google.com/file/d/15sDyizRijrf6OM9K-Zg0xlXpAKks5Uak/view?usp=sharing)
+- [발표자료](https://docs.google.com/presentation/d/1FV0qLNpZK1FSXkrlF-46xBQvvPXkVE2A/edit?usp=share_link&ouid=100934178736454734095&rtpof=true&sd=true)
+- [명세서](https://docs.google.com/spreadsheets/d/1nZ5lGBsN1GYKoJO79iOhLn1kQwKNZGLz/edit?usp=sharing&ouid=100934178736454734095&rtpof=true&sd=true)
 
+### Description
+```
+'PlanT'는사용자가 쉽게 반려 식물을 기를 수 있도록 도와주는 반려식물 관리 앱입니다.
+COVID-19로 집에 있는 시간이 늘어나면서 여가생활로 반려 식물을 기르고자 하는 대중적인 요구가 확장되고 있습니다. 그러나 식물을 처음 키우는 초보자들이 많기에 다양한 어려움이 발생하고 있습니다. 
+'PlanT'는 식물 생육 환경을 알려주어 사용자가 쉽게 반려 식물을 키울 수 있도록 도와줍니다. 이러한 긍정적인 효과를 통해 반려 식물 문화 형성을 추구합니다.
+```
+### Tech Stack
+#### Tech Stack
+```
+
+```
+#### ERD 설계
+
+### Author
+Android: 김나진  
+Server: 송민영

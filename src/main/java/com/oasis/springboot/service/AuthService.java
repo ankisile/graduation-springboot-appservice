@@ -2,8 +2,8 @@ package com.oasis.springboot.service;
 
 import com.oasis.springboot.domain.user.User;
 import com.oasis.springboot.domain.user.UserRepository;
-import com.oasis.springboot.dto.LoginDto;
-import com.oasis.springboot.dto.TokenResponseDto;
+import com.oasis.springboot.dto.user.LoginDto;
+import com.oasis.springboot.dto.user.TokenResponseDto;
 import com.oasis.springboot.common.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -1,4 +1,4 @@
-package com.oasis.springboot.fcm;
+package com.oasis.springboot.common.fcm;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
@@ -9,11 +9,10 @@ import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import com.oasis.springboot.domain.pushAlarm.PushAlarm;
 import com.oasis.springboot.domain.pushAlarm.PushAlarmRepository;
+import com.oasis.springboot.dto.weather.WeatherDTO;
 import com.oasis.springboot.service.WeatherService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -45,7 +44,7 @@ public class FcmService {
     @PostConstruct
     public void firebaseSetting() throws IOException {
         GoogleCredentials googleCredentials =
-                GoogleCredentials.fromStream(new ClassPathResource("firebase/plant-5bedc-firebase-adminsdk-9xou6-99b99d329f.json")
+                GoogleCredentials.fromStream(new ClassPathResource("firebase/plant-5bedc-firebase-adminsdk-9xou6-7f1a6d3d80.json")
                                 .getInputStream())
                 .createScoped((Arrays.asList(fireBaseCreateScoped)));
         FirebaseOptions secondaryAppConfig = FirebaseOptions.builder()
@@ -61,11 +60,11 @@ public class FcmService {
         String title = "오늘은 좋은 날씨~";
         String message = "오늘도 반려식물과 좋은 하루 되세요~";
         try {
-            JSONArray jsonArray = weatherService.getWeather("60", "127");
+            List<WeatherDTO> responseDto = weatherService.getWeather("60", "127");
 
-            JSONObject jsonObject = (JSONObject) jsonArray.get(4);
-            Object object = jsonObject.get("Value");
-            String temperature = object.toString();
+            WeatherDTO weather = responseDto.get(4);
+            String temperature = weather.getValue();
+
             if(Integer.parseInt(temperature) < 0){
                 title = "오늘은 추운 날씨";
                 message = "오늘의 기온은 "+temperature+" 입니다. 반려식물이 얼지 않게 조심해주세요";
@@ -75,17 +74,15 @@ public class FcmService {
                 message = "오늘의 기온은 "+temperature+" 입니다. 반려식물이 타지 않게 조심해주세요";
             }
 
-            jsonObject = (JSONObject) jsonArray.get(9);
-            object = jsonObject.get("Value");
-            String wind = object.toString();
+            weather = responseDto.get(9);
+            String wind = weather.getValue();
             if(Integer.parseInt(wind) >= 9) {
                 title = "바람이 강한 날씨";
                 message = "바람이 강하니 밖에 있는 반려식물 가지가 부러지지 않게 조심하세요";
             }
 
-            jsonObject = (JSONObject) jsonArray.get(2);
-            object = jsonObject.get("Value");
-            String rain = object.toString();
+            weather = responseDto.get(2);
+            String rain = weather.getValue();
             if(!rain.equals("강수없음") && Float.parseFloat(rain) >= 30.0f)  {
                 title = "비(눈)가 많이 와요";
                 message = "비가 많이 오니 밖에 있는 반려식물이 잠기지 않게 조심하세요";

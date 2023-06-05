@@ -2,17 +2,14 @@ package com.oasis.springboot.weather;
 
 import com.oasis.springboot.dto.weather.WeatherDTO;
 import com.oasis.springboot.service.WeatherService;
-import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 @SpringBootTest

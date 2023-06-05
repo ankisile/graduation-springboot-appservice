@@ -5,7 +5,6 @@ import com.oasis.springboot.common.exception.InvalidateUserException;
 import com.oasis.springboot.common.handler.S3Uploader;
 import com.oasis.springboot.domain.user.User;
 import com.oasis.springboot.domain.user.UserRepository;
-
 import com.oasis.springboot.dto.user.*;
 import com.oasis.springboot.service.AuthService;
 import com.oasis.springboot.service.UserService;
@@ -18,7 +17,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.oasis.springboot.user.UserTemplate.*;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @Transactional
@@ -39,16 +39,15 @@ public class UserServiceTest {
     private String defaultImg;
 
 
-
     @Test
     void 회원가입() throws Exception {
         //given
-        SignUpRequestDto requestDto = makeTestSingUpRequestDtoWithImage();
+        SignUpRequestDto requestDto = makeTestSignUpRequestDtoWithImage();
 
         //when
         Long id = userService.signup(requestDto);
         User user = userRepository.findById(id)
-                .orElseThrow(()->new InvalidateUserException());
+                .orElseThrow(() -> new InvalidateUserException());
 
         //then
         assertThat(user.getEmail()).isEqualTo(requestDto.getEmail());
@@ -64,7 +63,7 @@ public class UserServiceTest {
     void 회원가입_실패_이메일중복() throws Exception {
         //given
         User user = makeTestUser();
-        SignUpRequestDto requestDto = makeTestSignUpRequestDto();
+        SignUpRequestDto requestDto = makeTestSignUpRequestDtoWithImage();
 
         //when
         userRepository.save(user);
@@ -92,7 +91,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void fcm_토큰_업데이트() throws Exception{
+    void fcm_토큰_업데이트() throws Exception {
         //given
         User user = makeTestUser();
         userRepository.save(user);
@@ -154,7 +153,7 @@ public class UserServiceTest {
         //given
         User user = makeTestUser();
         userRepository.save(user);
-        UpdateUserRequestDto requestDto = new UpdateUserRequestDto("hanrry", getProfileImage());
+        UpdateUserRequestDto requestDto = new UpdateUserRequestDto("hanrry", getProfileImage(), false);
 
         //when
         userService.updateUserInfo(requestDto);
@@ -170,7 +169,7 @@ public class UserServiceTest {
 
 
     @Test
-    void 비밀번호변경() throws Exception{
+    void 비밀번호변경() throws Exception {
         //given
         User user = makeTestUser();
         userRepository.save(user);

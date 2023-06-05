@@ -39,9 +39,9 @@ public class WeatherService {
         List<WeatherItemDTO> itemList = responseDto.getBody().getResponse().getBody().getItems().getItem();
 
         List<WeatherDTO> weatherDTOList = new ArrayList<>();
-        for(int i=0;i<10;i++) {
-            String category = itemList.get(i*6).getCategory();
-            String value = itemList.get(i*6).getFcstValue();
+        for (int i = 0; i < 10; i++) {
+            String category = itemList.get(i * 6).getCategory();
+            String value = itemList.get(i * 6).getFcstValue();
 
             WeatherDTO weatherDTO = new WeatherDTO(category, value);
             weatherDTOList.add(weatherDTO);
@@ -61,36 +61,36 @@ public class WeatherService {
         String numOfRows = "250";
 
         StringBuilder urlBuilder = new StringBuilder(apiUrl);
-        urlBuilder.append("?" + URLEncoder.encode("ServiceKey","UTF-8") + "="+serviceKey);
-        urlBuilder.append("&" + URLEncoder.encode("nx","UTF-8") + "=" + URLEncoder.encode(nx, "UTF-8")); //경도
-        urlBuilder.append("&" + URLEncoder.encode("ny","UTF-8") + "=" + URLEncoder.encode(ny, "UTF-8")); //위도
-        urlBuilder.append("&" + URLEncoder.encode("base_date","UTF-8") + "=" + URLEncoder.encode(baseDate, "UTF-8")); /* 조회하고싶은 날짜*/
-        urlBuilder.append("&" + URLEncoder.encode("base_time","UTF-8") + "=" + URLEncoder.encode(baseTime, "UTF-8"));
-        urlBuilder.append("&" + URLEncoder.encode("dataType","UTF-8") + "=" + URLEncoder.encode(dataType, "UTF-8"));	/* 타입 */
-        urlBuilder.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode(numOfRows, "UTF-8"));	/* 한 페이지 결과 수 */
+        urlBuilder.append("?" + URLEncoder.encode("ServiceKey", "UTF-8") + "=" + serviceKey);
+        urlBuilder.append("&" + URLEncoder.encode("nx", "UTF-8") + "=" + URLEncoder.encode(nx, "UTF-8")); //경도
+        urlBuilder.append("&" + URLEncoder.encode("ny", "UTF-8") + "=" + URLEncoder.encode(ny, "UTF-8")); //위도
+        urlBuilder.append("&" + URLEncoder.encode("base_date", "UTF-8") + "=" + URLEncoder.encode(baseDate, "UTF-8")); /* 조회하고싶은 날짜*/
+        urlBuilder.append("&" + URLEncoder.encode("base_time", "UTF-8") + "=" + URLEncoder.encode(baseTime, "UTF-8"));
+        urlBuilder.append("&" + URLEncoder.encode("dataType", "UTF-8") + "=" + URLEncoder.encode(dataType, "UTF-8"));    /* 타입 */
+        urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode(numOfRows, "UTF-8"));    /* 한 페이지 결과 수 */
 
         return new URI(urlBuilder.toString());
 
     }
 
 
-    private String setBaseDate(){
+    private String setBaseDate() {
         LocalDateTime currentDateTime = LocalDateTime.now();
         String baseDate = currentDateTime.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        if(currentDateTime.getMinute()<30) {
-            if(currentDateTime.getHour() == 0) {
+        if (currentDateTime.getMinute() < 30) {
+            if (currentDateTime.getHour() == 0) {
                 baseDate = LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
             }
         }
         return baseDate;
     }
 
-    private String setBaseTime(){
+    private String setBaseTime() {
         LocalTime currentTime = LocalTime.now();
-        String baseTime = String.format("%02d", currentTime.getHour())+"30";
-        if(currentTime.getMinute()<30) {
-            baseTime =  String.format("%02d", currentTime.getHour() - 1) + "30";
-            if(currentTime.getHour() == 0) {
+        String baseTime = String.format("%02d", currentTime.getHour()) + "30";
+        if (currentTime.getMinute() < 30) {
+            baseTime = String.format("%02d", currentTime.getHour() - 1) + "30";
+            if (currentTime.getHour() == 0) {
                 baseTime = "2330";
             }
         }

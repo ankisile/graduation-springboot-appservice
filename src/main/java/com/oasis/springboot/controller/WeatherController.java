@@ -2,17 +2,14 @@ package com.oasis.springboot.controller;
 
 import com.oasis.springboot.common.response.ListResponse;
 import com.oasis.springboot.common.response.ResponseService;
-import com.oasis.springboot.dto.weather.WeatherApiResponseDTO;
 import com.oasis.springboot.dto.weather.WeatherDTO;
 import com.oasis.springboot.service.WeatherService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
 import lombok.RequiredArgsConstructor;
 import org.json.simple.parser.ParseException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,11 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.List;
 
 @Tag(name = "Weather", description = "메인화면 날씨 API")
 @RestController
-@RequestMapping("/api/weather")
+@RequestMapping("/api/weathers")
 @RequiredArgsConstructor
 public class WeatherController {
 

@@ -22,11 +22,11 @@ public class PlaceController {
 
     @Operation(summary = "식물샵", description = "500m이내 식물샵 가져오기")
     @Parameters({
-            @Parameter(name = "x", description = "경도", example = "127"),
-            @Parameter(name = "y", description = "위도", example = "36"),
+            @Parameter(name = "x", description = "경도", example = "126.986"),
+            @Parameter(name = "y", description = "위도", example = "37.541"),
     })
     @GetMapping("/places")
-    private KakaoPlaceResponseDto getPlantStores(@RequestParam("x") String x, @RequestParam("y") String y){
+    private KakaoPlaceResponseDto getPlantStores(@RequestParam("x") String x, @RequestParam("y") String y) {
         return placeService.getPlantStores(x, y);
     }
 }

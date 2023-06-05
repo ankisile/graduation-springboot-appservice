@@ -46,7 +46,7 @@ public class FcmService {
         GoogleCredentials googleCredentials =
                 GoogleCredentials.fromStream(new ClassPathResource("firebase/plant-5bedc-firebase-adminsdk-9xou6-7f1a6d3d80.json")
                                 .getInputStream())
-                .createScoped((Arrays.asList(fireBaseCreateScoped)));
+                        .createScoped((Arrays.asList(fireBaseCreateScoped)));
         FirebaseOptions secondaryAppConfig = FirebaseOptions.builder()
                 .setCredentials(googleCredentials)
                 .build();
@@ -65,34 +65,31 @@ public class FcmService {
             WeatherDTO weather = responseDto.get(4);
             String temperature = weather.getValue();
 
-            if(Integer.parseInt(temperature) < 0){
+            if (Integer.parseInt(temperature) < 0) {
                 title = "오늘은 추운 날씨";
-                message = "오늘의 기온은 "+temperature+" 입니다. 반려식물이 얼지 않게 조심해주세요";
-            }
-            else if(Integer.parseInt(temperature)  > 30) {
+                message = "오늘의 기온은 " + temperature + " 입니다. 반려식물이 얼지 않게 조심해주세요";
+            } else if (Integer.parseInt(temperature) > 30) {
                 title = "오늘은 더운 날씨";
-                message = "오늘의 기온은 "+temperature+" 입니다. 반려식물이 타지 않게 조심해주세요";
+                message = "오늘의 기온은 " + temperature + " 입니다. 반려식물이 타지 않게 조심해주세요";
             }
 
             weather = responseDto.get(9);
             String wind = weather.getValue();
-            if(Integer.parseInt(wind) >= 9) {
+            if (Integer.parseInt(wind) >= 9) {
                 title = "바람이 강한 날씨";
                 message = "바람이 강하니 밖에 있는 반려식물 가지가 부러지지 않게 조심하세요";
             }
 
             weather = responseDto.get(2);
             String rain = weather.getValue();
-            if(!rain.equals("강수없음") && Float.parseFloat(rain) >= 30.0f)  {
+            if (!rain.equals("강수없음") && Float.parseFloat(rain) >= 30.0f) {
                 title = "비(눈)가 많이 와요";
                 message = "비가 많이 오니 밖에 있는 반려식물이 잠기지 않게 조심하세요";
-            }
-            else if(!rain.equals("강수없음")){
+            } else if (!rain.equals("강수없음")) {
                 title = "우산이 필요한 날씨";
                 message = "우산이 필요하지만 반려식물이 좋아하겠네요!";
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -108,10 +105,10 @@ public class FcmService {
     @Scheduled(cron = "0 00 11 * * ?")
     public void pushWaterNotification() throws FirebaseMessagingException {
         List<PushAlarm> pushAlarmList = pushAlarmRepository.findAllByDate(LocalDate.now());
-        for(PushAlarm pushAlarm : pushAlarmList){
+        for (PushAlarm pushAlarm : pushAlarmList) {
             String token = pushAlarm.getUser().getFcmToken();
             String title = "오늘은 물 주는 날~🎍";
-            String body = pushAlarm.getUser().getNickName()+"님. 물이 필요한 식물이 있어요. 물 주러 가볼까요~?";
+            String body = pushAlarm.getUser().getNickName() + "님. 물이 필요한 식물이 있어요. 물 주러 가볼까요~?";
 
             sendTokenMessage(token, title, body);
             pushAlarmRepository.delete(pushAlarm);

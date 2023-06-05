@@ -1,6 +1,6 @@
 package com.oasis.springboot.service;
 
-import com.oasis.springboot.dto.KakaoPlaceResponseDto;
+import com.oasis.springboot.dto.place.KakaoPlaceResponseDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,7 +17,7 @@ public class PlaceService {
     @Value("${kakao.api.key}")
     private String KakaoApiKey;
 
-    public KakaoPlaceResponseDto getPlantStores(String x, String y){
+    public KakaoPlaceResponseDto getPlantStores(String x, String y) {
         String apiUrl = "https://dapi.kakao.com/v2/local/search/keyword.json";
         URI urlTemplate = UriComponentsBuilder.fromHttpUrl(apiUrl)
                 .queryParam("query", "꽃집")
@@ -40,7 +40,7 @@ public class PlaceService {
 
     private HttpHeaders getHeaders() {
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "KakaoAK "+KakaoApiKey);
+        headers.set("Authorization", "KakaoAK " + KakaoApiKey);
         headers.set("Content-type", "application/json");
 
         return headers;

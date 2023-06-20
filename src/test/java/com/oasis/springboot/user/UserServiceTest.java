@@ -153,7 +153,7 @@ public class UserServiceTest {
         //given
         User user = makeTestUser();
         userRepository.save(user);
-        UpdateUserRequestDto requestDto = new UpdateUserRequestDto("hanrry", getProfileImage(), false);
+        UpdateUserRequestDto requestDto = new UpdateUserRequestDto("hanrry", getProfileImage(), "true");
 
         //when
         userService.updateUserInfo(requestDto);

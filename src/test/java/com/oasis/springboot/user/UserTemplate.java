@@ -15,11 +15,7 @@ public class UserTemplate {
 
     private static final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-    public static SignUpRequestDto makeTestSignUpRequestDto() throws Exception {
-        return new SignUpRequestDto(EMAIL, PASSWORD, NICKNAME, null);
-    }
-
-    public static SignUpRequestDto makeTestSingUpRequestDtoWithImage() throws Exception{
+    public static SignUpRequestDto makeTestSignUpRequestDtoWithImage() throws Exception {
         return new SignUpRequestDto(EMAIL, PASSWORD, NICKNAME, getProfileImage());
     }
 

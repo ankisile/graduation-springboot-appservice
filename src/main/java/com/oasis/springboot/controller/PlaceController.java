@@ -1,6 +1,6 @@
 package com.oasis.springboot.controller;
 
-import com.oasis.springboot.dto.KakaoPlaceResponseDto;
+import com.oasis.springboot.dto.place.KakaoPlaceResponseDto;
 import com.oasis.springboot.service.PlaceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

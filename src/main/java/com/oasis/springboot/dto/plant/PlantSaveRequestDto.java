@@ -6,9 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -22,23 +22,26 @@ public class PlantSaveRequestDto {
     private Double sunshine;
     private Integer highTemperature;
     private Integer lowTemperature;
+    private MultipartFile file;
 
     @Builder
-    public PlantSaveRequestDto(String name, String picture, Integer waterAlarmInterval,  String waterSupply,  Double sunshine,Integer highTemperature, Integer lowTemperature) {
+    public PlantSaveRequestDto(String name, String picture, LocalDate adoptingDate, Integer waterAlarmInterval, String waterSupply, Double sunshine, Integer highTemperature, Integer lowTemperature, MultipartFile file) {
         this.name = name;
         this.picture = picture;
+        this.adoptingDate = adoptingDate;
         this.waterAlarmInterval = waterAlarmInterval;
         this.waterSupply = waterSupply;
         this.sunshine = sunshine;
         this.highTemperature = highTemperature;
         this.lowTemperature = lowTemperature;
+        this.file = file;
     }
 
-    public Plant toEntity(User user){
+    public Plant toEntity(User user) {
         return Plant.builder()
                 .name(name)
                 .picture(picture)
-                .adoptingDate(LocalDate.now())
+                .adoptingDate(adoptingDate)
                 .waterAlarmInterval(waterAlarmInterval)
                 .waterSupply(waterSupply)
                 .sunshine(sunshine)

@@ -1,7 +1,7 @@
 package com.oasis.springboot.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oasis.springboot.common.exception.InvalidatePlantException;
+import com.oasis.springboot.common.handler.S3Uploader;
 import com.oasis.springboot.domain.calendar.Calendar;
 import com.oasis.springboot.domain.calendar.CalendarRepository;
 import com.oasis.springboot.domain.calendar.CareType;
@@ -15,18 +15,15 @@ import com.oasis.springboot.domain.user.User;
 import com.oasis.springboot.dto.plant.PlantDetailResponseDto;
 import com.oasis.springboot.dto.plant.PlantSaveRequestDto;
 import com.oasis.springboot.dto.plant.PlantsResponseDto;
-import com.oasis.springboot.common.handler.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PlantService {
 
@@ -38,47 +35,35 @@ public class PlantService {
     private final S3Uploader s3Uploader;
 
     @Transactional
-    public String savePlant(String dto, MultipartFile file) {
+    public Long savePlant(PlantSaveRequestDto requestDto) {
 
-        ObjectMapper mapper = new ObjectMapper();
-        PlantSaveRequestDto requestDto = null;
-        try {
-            requestDto = mapper.readValue(dto, PlantSaveRequestDto.class);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        try {
-            if(file!=null) {
-                String s3Url = s3Uploader.upload(file, "plant");
-                requestDto.setPicture(s3Url);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        String s3Url = requestDto.getPicture();
+        if (s3Url == null) {
+            s3Url = s3Uploader.getFileS3Url(requestDto.getFile(), "plant");
+            requestDto.setPicture(s3Url);
         }
 
         User user = userService.findUser();
-        System.out.print(user);
 
         Plant plant = requestDto.toEntity(user);
         plantRepository.save(plant);
 
         Calendar calendar = Calendar.builder()
                 .type(CareType.ADOPTING)
-                .plantName(requestDto.getName())
+                .plantName(plant.getName())
                 .user(user)
                 .plant(plant)
                 .build();
         calendarRepository.save(calendar);
 
         PushAlarm pushAlarm = PushAlarm.builder()
-                .date(LocalDate.now().plusDays(requestDto.getWaterAlarmInterval()))
+                .date(plant.getAdoptingDate().plusDays(plant.getWaterAlarmInterval()))
                 .plant(plant)
                 .user(user)
                 .build();
         pushAlarmRepository.save(pushAlarm);
 
-        return "식물 등록 성공";
+        return plant.getId();
     }
 
     public List<PlantsResponseDto> getPlants() {
@@ -89,12 +74,18 @@ public class PlantService {
                 .collect(Collectors.toList());
     }
 
+    public PlantDetailResponseDto getPlantDetail(Long plantId) {
+        Plant plant = plantRepository.findById(plantId)
+                .orElseThrow(InvalidatePlantException::new);
+        return new PlantDetailResponseDto(plant);
+    }
+
     @Transactional
-    public String deletePlant(Long plantId){
+    public String deletePlant(Long plantId) {
         List<Journal> journalList = journalRepository.findJournalsByPlantIdFetchJoin(plantId);
 
-        for(Journal journal : journalList){
-            if(journal.getPicture() != null) {
+        for (Journal journal : journalList) {
+            if (journal.getPicture() != null) {
                 String str = journal.getPicture();
                 String path = str.substring(62, str.length());
                 s3Uploader.delete(path);
@@ -104,39 +95,31 @@ public class PlantService {
 
         List<Calendar> calendarList = calendarRepository.findAllByPlantId(plantId);
 
-        for(Calendar calendar : calendarList){
+        for (Calendar calendar : calendarList) {
             calendarRepository.delete(calendar);
         }
 
         List<PushAlarm> pushAlarmList = pushAlarmRepository.findAllByPlantId(plantId);
-        for(PushAlarm pushAlarm : pushAlarmList){
+        for (PushAlarm pushAlarm : pushAlarmList) {
             pushAlarmRepository.delete(pushAlarm);
         }
 
-
         Plant plant = plantRepository.findById(plantId)
-                        .orElseThrow(InvalidatePlantException::new);
+                .orElseThrow(InvalidatePlantException::new);
 
         plantRepository.delete(plant);
 
         return "식물 삭제 성공";
     }
 
-    public PlantDetailResponseDto getPlantDetail(Long plantId){
-        Plant plant = plantRepository.findById(plantId)
-                .orElseThrow(InvalidatePlantException::new);
-        return new PlantDetailResponseDto(plant);
-    }
-
     @Transactional
-    public String makeStar(Long plantId){
+    public String makeStar(Long plantId) {
         Plant plant = plantRepository.findById(plantId)
                 .orElseThrow(InvalidatePlantException::new);
-        if(plant.getStar()){
+        if (plant.getStar()) {
             plant.updatePlantStar(false);
             return "대표 식물 취소 완료";
-        }
-        else {
+        } else {
             plant.updatePlantStar(true);
             return "대표 식물 성공 완료";
         }

@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
@@ -16,16 +17,16 @@ import java.time.LocalDate;
 public class PlantSaveRequestDto {
     private String name;
     private String picture;
-    private LocalDate adoptingDate;
-    private Integer waterAlarmInterval;
+    private String adoptingDate;
+    private String waterAlarmInterval;
     private String waterSupply;
-    private Double sunshine;
-    private Integer highTemperature;
-    private Integer lowTemperature;
+    private String sunshine;
+    private String highTemperature;
+    private String lowTemperature;
     private MultipartFile file;
 
     @Builder
-    public PlantSaveRequestDto(String name, String picture, LocalDate adoptingDate, Integer waterAlarmInterval, String waterSupply, Double sunshine, Integer highTemperature, Integer lowTemperature, MultipartFile file) {
+    public PlantSaveRequestDto(String name, String picture, String adoptingDate, String waterAlarmInterval, String waterSupply, String sunshine, String highTemperature, String lowTemperature, MultipartFile file) {
         this.name = name;
         this.picture = picture;
         this.adoptingDate = adoptingDate;
@@ -41,12 +42,12 @@ public class PlantSaveRequestDto {
         return Plant.builder()
                 .name(name)
                 .picture(picture)
-                .adoptingDate(adoptingDate)
-                .waterAlarmInterval(waterAlarmInterval)
+                .adoptingDate(LocalDate.parse(adoptingDate, DateTimeFormatter.ISO_DATE))
+                .waterAlarmInterval(Integer.parseInt(waterAlarmInterval))
                 .waterSupply(waterSupply)
-                .sunshine(sunshine)
-                .highTemperature(highTemperature)
-                .lowTemperature(lowTemperature)
+                .sunshine(Double.parseDouble(sunshine))
+                .highTemperature(Integer.parseInt(highTemperature))
+                .lowTemperature(Integer.parseInt(lowTemperature))
                 .user(user)
                 .build();
     }

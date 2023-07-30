@@ -4,17 +4,16 @@ import com.oasis.springboot.dto.plant.PlantSaveRequestDto;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.FileInputStream;
-import java.time.LocalDate;
 
 public class PlantTemplate {
     public static final String NAME = "PLANTname";
     public static final String NAME2 = "PLANTname2";
-    public static final LocalDate ADOPTINGDATE = LocalDate.of(2023, 3, 3);
-    public static final Integer WATERALARMINTERVAL = 2;
+    public static final String ADOPTINGDATE = "2023-03-03";
+    public static final String WATERALARMINTERVAL = "2";
     public static final String WATERSUPPLY = "많음";
-    public static final Double SUNSHINE = 3.0;
-    public static final Integer HIGHTEMPERATURE = 40;
-    public static final Integer LOWTEMPERATURE = -10;
+    public static final String SUNSHINE = "3.0";
+    public static final String HIGHTEMPERATURE = "40";
+    public static final String LOWTEMPERATURE = "-10";
 
     public static PlantSaveRequestDto makePlantSaveRequestDtoWithFile() throws Exception {
         return new PlantSaveRequestDto(NAME, null, ADOPTINGDATE, WATERALARMINTERVAL, WATERSUPPLY, SUNSHINE, HIGHTEMPERATURE, LOWTEMPERATURE, getPlantImage());

@@ -21,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,10 +66,10 @@ public class PlantServiceTest {
         List<PushAlarm> pushAlarmList = pushAlarmRepository.findAllByPlantId(plantId);
 
         assertThat(plant.getName()).isEqualTo(saveRequestDto.getName());
-        assertThat(plant.getSunshine()).isEqualTo(saveRequestDto.getSunshine());
+        assertThat(plant.getSunshine()).isEqualTo(Double.parseDouble(saveRequestDto.getSunshine()));
         assertThat(plant.getPicture()).isNotNull();
         assertThat(calendarList.get(0).getType()).isEqualTo(CareType.ADOPTING);
-        assertThat(pushAlarmList.get(0).getDate()).isEqualTo(saveRequestDto.getAdoptingDate().plusDays(saveRequestDto.getWaterAlarmInterval()));
+        assertThat(pushAlarmList.get(0).getDate()).isEqualTo(LocalDate.parse(saveRequestDto.getAdoptingDate()).plusDays(Integer.parseInt(saveRequestDto.getWaterAlarmInterval())));
 
         //teardown
         String str = plant.getPicture();
@@ -91,10 +92,10 @@ public class PlantServiceTest {
         List<PushAlarm> pushAlarmList = pushAlarmRepository.findAllByPlantId(plantId);
 
         assertThat(plant.getName()).isEqualTo(saveRequestDto.getName());
-        assertThat(plant.getSunshine()).isEqualTo(saveRequestDto.getSunshine());
+        assertThat(plant.getSunshine()).isEqualTo(Double.parseDouble(saveRequestDto.getSunshine()));
         assertThat(plant.getPicture()).isEqualTo(saveRequestDto.getPicture());
         assertThat(calendarList.get(0).getType()).isEqualTo(CareType.ADOPTING);
-        assertThat(pushAlarmList.get(0).getDate()).isEqualTo(saveRequestDto.getAdoptingDate().plusDays(saveRequestDto.getWaterAlarmInterval()));
+        assertThat(pushAlarmList.get(0).getDate()).isEqualTo(LocalDate.parse(saveRequestDto.getAdoptingDate()).plusDays(Integer.parseInt(saveRequestDto.getWaterAlarmInterval())));
     }
 
     @Test

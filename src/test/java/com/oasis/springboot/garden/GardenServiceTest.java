@@ -57,8 +57,13 @@ public class GardenServiceTest {
 
     }
 
+    @Test
     void 식물도감_검색() {
-
+        List<GardenListResponseDto> gardenList = gardenService.searchGardenList("산세베리아");
+        Long id = gardenList.get(0).getId();
+        String name = gardenList.get(0).getName();
+        Garden garden = gardenRepository.findById(id).get();
+        assertThat(name).isEqualTo(garden.getName());
 
     }
 

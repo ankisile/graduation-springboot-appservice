@@ -38,7 +38,6 @@ public class JournalServiceTest {
 
     @Test
     public void 일지_등록하기_사진과() throws Exception{
-        //given
         User user = saveUser();
         PlantSaveRequestDto saveRequestDto = makePlantSaveRequestDtoWithFile();
         Long plantId = plantService.savePlant(saveRequestDto);
@@ -52,8 +51,19 @@ public class JournalServiceTest {
         assertThat(journal.getPlant().getId()).isEqualTo(plantId);
     }
 
-    public void 일지_등록하기_사진없이(){
+    @Test
+    public void 일지_등록하기_사진없이() throws Exception {
+        User user = saveUser();
+        PlantSaveRequestDto saveRequestDto = makePlantSaveRequestDtoWithFile();
+        Long plantId = plantService.savePlant(saveRequestDto);
+        JournalSaveRequestDto journalSaveRequestDto = makeJournalSaveRequestDtoWithoutFile();
 
+        journalService.saveJournal(plantId, journalSaveRequestDto);
+
+        Journal journal = journalRepository.findAll().get(0);
+
+        assertThat(journal.getContent()).isEqualTo(CONTENT);
+        assertThat(journal.getPicture()).isNull();
     }
 
     public void 일지_가져오기(){

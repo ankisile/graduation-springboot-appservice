@@ -24,18 +24,12 @@ public class GardenOpenApiService {
     private String gardenApiKey;
 
     @Transactional
-    public void getOpenApiGardenList(){
-        String apiUrl = "http://api.nongsaro.go.kr/service/garden/gardenList";
-        String detailUrl = "http://api.nongsaro.go.kr/service/garden/gardenDtl";
-        URI urlTemplate = UriComponentsBuilder.fromHttpUrl(apiUrl)
-                .queryParam("apiKey", gardenApiKey)
-                .queryParam("numOfRows", "250")
-                .build()
-                .encode()
-                .toUri();
+    public String saveOpenApiGardenList(){
 
         RestTemplate restTemplate = new RestTemplate();
-        String response = restTemplate.getForObject(urlTemplate, String.class);
+
+        URI urlForList = makeURITemplateForList();
+        String response = restTemplate.getForObject(urlForList, String.class);
 
         JSONObject object = XML.toJSONObject(response);
 
@@ -49,17 +43,11 @@ public class GardenOpenApiService {
             String name = jarr.getJSONObject(i).getString("cntntsSj");
             String picture = "http://www.nongsaro.go.kr/cms_contents/301/" + cntntsNo + "_MF_REPR_ATTACH_01_TMB.jpg";
 
-            urlTemplate = UriComponentsBuilder.fromHttpUrl(detailUrl)
-                    .queryParam("apiKey", gardenApiKey)
-                    .queryParam("cntntsNo", cntntsNo)
-                    .build()
-                    .encode()
-                    .toUri();
+            URI urlForDetail = makeURITemplateForDetail(cntntsNo);
 
-            response = restTemplate.getForObject(urlTemplate, String.class);
+            response = restTemplate.getForObject(urlForDetail, String.class);
             object = XML.toJSONObject(response);
             jobj = object.getJSONObject("response").getJSONObject("body").getJSONObject("item");
-
 
             String grwhTpCodeNm = jobj.getString("grwhTpCodeNm");
             String hdCodeNm = jobj.getString("hdCodeNm");
@@ -89,5 +77,25 @@ public class GardenOpenApiService {
 
             gardenRepository.save(gardenSaveDto.toEntity());
         }
+        return "success";
     }
+
+    private URI makeURITemplateForList() {
+        String apiUrl = "http://api.nongsaro.go.kr/service/garden/gardenList";
+        URI urlTemplate = UriComponentsBuilder.fromHttpUrl(apiUrl)
+                .queryParam("apiKey", gardenApiKey)
+                .queryParam("numOfRows", "250")
+                .build().encode().toUri();
+        return urlTemplate;
+    }
+
+    private URI makeURITemplateForDetail(String contentNo) {
+        String apiUrl = "http://api.nongsaro.go.kr/service/garden/gardenDtl";
+        URI urlTemplate = UriComponentsBuilder.fromHttpUrl(apiUrl)
+                .queryParam("apiKey", gardenApiKey)
+                .queryParam("cntntsNo", contentNo)
+                .build().encode().toUri();
+        return urlTemplate;
+    }
+
 }

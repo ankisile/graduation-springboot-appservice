@@ -33,7 +33,7 @@ public class JournalController {
     @Operation(security = {@SecurityRequirement(name = "bearer-key")})
     @GetMapping("/{plantId}")
     public ListResponse<JournalsResponseDto> getJournals(@PathVariable Long plantId) {
-        return responseService.getListResponse(journalService.getJournals(plantId));
+        return responseService.getListResponse(journalService.getJournalsLatest(plantId));
     }
 
     @Operation(security = {@SecurityRequirement(name = "bearer-key")})

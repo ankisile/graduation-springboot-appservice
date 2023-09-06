@@ -42,8 +42,8 @@ public class JournalService {
         return "식물 일지 등록 성공";
     }
 
-    public List<JournalsResponseDto> getJournals(Long plantId) {
-        return journalRepository.findJournalsByPlantIdFetchJoin(plantId)
+    public List<JournalsResponseDto> getJournalsLatest(Long plantId) {
+        return journalRepository.findJournalsByPlantIdFetchJoinLatest(plantId)
                 .stream()
                 .map(JournalsResponseDto::new)
                 .collect(Collectors.toList());

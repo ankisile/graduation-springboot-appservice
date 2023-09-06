@@ -82,7 +82,7 @@ public class PlantService {
 
     @Transactional
     public String deletePlant(Long plantId) {
-        List<Journal> journalList = journalRepository.findJournalsByPlantIdFetchJoin(plantId);
+        List<Journal> journalList = journalRepository.findJournalsByPlantIdFetchJoinLatest(plantId);
 
         for (Journal journal : journalList) {
             if (journal.getPicture() != null) {

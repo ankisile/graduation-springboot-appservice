@@ -2,6 +2,7 @@ package com.oasis.springboot.journal;
 
 import com.oasis.springboot.domain.journal.Journal;
 import com.oasis.springboot.domain.journal.JournalRepository;
+import com.oasis.springboot.domain.plant.Plant;
 import com.oasis.springboot.domain.user.User;
 import com.oasis.springboot.domain.user.UserRepository;
 import com.oasis.springboot.dto.journal.JournalSaveRequestDto;
@@ -16,6 +17,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.oasis.springboot.journal.JournalTemplate.*;
 import static com.oasis.springboot.plant.PlantTemplate.makePlantSaveRequestDtoWithFile;
@@ -89,8 +91,24 @@ public class JournalServiceTest {
         assertThat(journalsList.get(1).getContent()).isEqualTo(CONTENT1);
     }
 
-    public void 일지_삭제하기(){
+    @Test
+    public void 일지_삭제하기() throws Exception {
+        User user = saveUser();
+        PlantSaveRequestDto saveRequestDto = makePlantSaveRequestDtoWithFile();
 
+        Long plantId = plantService.savePlant(saveRequestDto);
+
+        JournalSaveRequestDto journalSaveRequestDto = makeJournalSaveRequestDtoWithFile();
+
+        journalService.saveJournal(plantId, journalSaveRequestDto);
+
+        List<JournalsResponseDto> journalsList = journalService.getJournalsLatest(plantId);
+
+        Long journalId = journalsList.get(0).getId();
+        journalService.deleteJournal(journalId);
+
+        Optional<Journal> journalOptional = journalRepository.findById(journalId);
+        assertThat(journalOptional).isEmpty();
     }
 
     private User saveUser() throws Exception {

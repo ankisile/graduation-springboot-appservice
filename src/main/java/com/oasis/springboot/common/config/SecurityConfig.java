@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true) //@PreAuthorize 어노테이션을 메소드 단위로 추가하기 위해 사용@Configuration
 @EnableWebSecurity // 스프링 시큐리티가 스프링 체인 필터에 등록. 기본적인 web 보안 활성화
-public class SecurityConfig{
+public class SecurityConfig {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
@@ -26,7 +26,7 @@ public class SecurityConfig{
     private final JwtFilter jwtFilter;
 
 
-    private static final String [] PERMIT_URL_ARRAY = {
+    private static final String[] PERMIT_URL_ARRAY = {
             "/v3/api-docs/**",
             "/swagger-ui/**"
     };
@@ -51,7 +51,7 @@ public class SecurityConfig{
                         .and()
                         .authorizeRequests() //HttpServeletRequest를 사용하는 요청들에대한 접근제한을 설정
                         .antMatchers(PERMIT_URL_ARRAY).permitAll()
-                        .antMatchers("/api/home").permitAll()
+                        .antMatchers("/api/weathers").permitAll()
                         .antMatchers("/api/signup").permitAll()
                         .antMatchers("/api/signin").permitAll()
                         .antMatchers("/api/places").permitAll()

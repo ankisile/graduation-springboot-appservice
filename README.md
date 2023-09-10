@@ -1,10 +1,10 @@
 ## 반려식물 관리 앱 PlanT
-![제목을 입력해주세요_-001](https://user-images.githubusercontent.com/53250432/235400210-86721d50-0423-4315-b4ae-386532caa3da.png)
+![화면_캡처_2023-05-02_135353-removebg-preview](https://github.com/ankisile/graduation-springboot-appservice/assets/53250432/e44bafc3-34bf-40e5-a22d-5fb2105f5575)
 > 졸업작품
+- [안드로이드](https://github.com/jejxis/GraduationProject)
 - [깃허브](https://github.com/ankisile/graduation-springboot-appservice)
 - [데모시연영상](https://drive.google.com/file/d/15sDyizRijrf6OM9K-Zg0xlXpAKks5Uak/view?usp=sharing)
 - [발표자료](https://docs.google.com/presentation/d/1FV0qLNpZK1FSXkrlF-46xBQvvPXkVE2A/edit?usp=share_link&ouid=100934178736454734095&rtpof=true&sd=true)
-- [명세서](https://docs.google.com/spreadsheets/d/1nZ5lGBsN1GYKoJO79iOhLn1kQwKNZGLz/edit?usp=sharing&ouid=100934178736454734095&rtpof=true&sd=true)
 
 ### Description
 ```
@@ -18,7 +18,9 @@ COVID-19로 집에 있는 시간이 늘어나면서 여가생활로 반려 식�
 
 ```
 #### ERD 설계
+![planT](https://github.com/jejxis/GraduationProject/assets/53250432/a34f558d-1321-475d-a1d0-5be501e16dec)
 
 ### Author
 Android: 김나진  
 Server: 송민영
+Design: 송민영

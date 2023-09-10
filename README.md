@@ -1,5 +1,6 @@
 ## 반려식물 관리 앱 PlanT
-![화면_캡처_2023-05-02_135353-removebg-preview](https://github.com/ankisile/graduation-springboot-appservice/assets/53250432/e44bafc3-34bf-40e5-a22d-5fb2105f5575)
+![화면_캡처_2023-05-02_135353-removebg-preview](https://github.com/ankisile/graduation-springboot-appservice/assets/53250432/502e0978-ff93-4e6f-8218-4731fca12a1c)
+
 > 졸업작품
 - [안드로이드](https://github.com/jejxis/GraduationProject)
 - [깃허브](https://github.com/ankisile/graduation-springboot-appservice)

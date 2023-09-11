@@ -15,9 +15,9 @@ COVID-19로 집에 있는 시간이 늘어나면서 여가생활로 반려 식�
 ```
 ### Tech Stack
 #### Tech Stack
-```
+![화면 캡처 2023-09-11 220333](https://github.com/ankisile/graduation-springboot-appservice/assets/53250432/eca05448-35f2-4a25-a583-b3fdffb5ed82)
 
-```
+
 #### ERD 설계
 ![planT](https://github.com/jejxis/GraduationProject/assets/53250432/a34f558d-1321-475d-a1d0-5be501e16dec)
 

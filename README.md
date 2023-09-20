@@ -15,6 +15,7 @@ COVID-19로 집에 있는 시간이 늘어나면서 여가생활로 반려 식�
 ```
 ### Tech Stack
 #### Tech Stack
+<img src="https://img.shields.io/badge/JAVA-007396?style=for-the-badge&logo=java&logoColor=white">   <img src="https://img.shields.io/badge/JPA-007396?style=for-the-badge&logo=JPA&logoColor=white">  <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=yellow">  <img src="https://img.shields.io/badge/mariaDB-003545?style=for-the-badge&logo=mariaDB&logoColor=white">  <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">   <img src="https://img.shields.io/badge/linux-FCC624?style=for-the-badge&logo=linux&logoColor=black">   <img src="https://img.shields.io/badge/amazonaws-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white">   <img src="https://img.shields.io/badge/firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black">    
 ![화면 캡처 2023-09-11 220333](https://github.com/ankisile/graduation-springboot-appservice/assets/53250432/eca05448-35f2-4a25-a583-b3fdffb5ed82)
 
 

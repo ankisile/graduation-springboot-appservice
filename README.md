@@ -4,8 +4,8 @@
 > 졸업작품
 - [안드로이드](https://github.com/jejxis/GraduationProject)
 - [깃허브](https://github.com/ankisile/graduation-springboot-appservice)
-- [데모시연영상](https://drive.google.com/file/d/15sDyizRijrf6OM9K-Zg0xlXpAKks5Uak/view?usp=sharing)
-- [발표자료](https://docs.google.com/presentation/d/1FV0qLNpZK1FSXkrlF-46xBQvvPXkVE2A/edit?usp=share_link&ouid=100934178736454734095&rtpof=true&sd=true)
+- [데모시연영상](https://drive.google.com/file/d/1HQGWR-aKDvYzTF86yhqEYU9Jz-TzQYpE/view?usp=drive_link)
+- [발표자료](https://drive.google.com/file/d/1cU4VlyWckK0tsf9oFFgceCfRQdS64K8u/view?usp=sharing)
 
 ### Description
 ```
